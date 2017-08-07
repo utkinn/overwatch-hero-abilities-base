@@ -1,0 +1,5 @@
+{
+	"title"		:	"Overwatch Abilities Base",
+	"type"		:	"weapon",
+	"ignore"	:	[".git/*", "README.md"]
+}
