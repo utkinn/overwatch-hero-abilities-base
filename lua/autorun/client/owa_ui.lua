@@ -1,18 +1,31 @@
 require("OWAHeroManager")
 
+LANGUAGE = {EN = "en", RU = "ru")
+
+userLanguage = LANGUAGE.EN
+
 function addOWASettingsPage(name, class, DFormBuild)
-	spawnmenu.AddToolMenuOption("Utilities", "Overwatch Abilities", class, name, nil, nil, DFormBuild) 
+	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.settings.category", "OWA"..class, name, nil, nil, DFormBuild) 
 end
 
 hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
-	addOWASettingsPage("Admin Settings", "OWAAdminSettings", function(form)
+	addOWASettingsPage("#owa.ui.settings.admin", "AdminSettings", function(form)
 		if LocalPlayer():IsAdmin() then
-			form:Button("Change hero permissions", "owa_ui_permissions")
-			form:CheckBox("Ally halos", "owa_hud_halos_ally")
-			form:CheckBox("Enemy halos", "owa_hud_halos_ally")
+			form:Button("#owa.ui.settings.admin.changePermissions", "owa_ui_permissions")
 		else
-			form:Help("You need the admin privilegies to watch and change these settings.")
+			form:Help("#owa.ui.settings.admin.denied")
 		end
+	end)
+	
+	addOWASettingsPage("HUD", "HUD", function(form)
+		form:CheckBox("#owa.ui.settings.hud.halo.ally", "owa_hud_halos_ally")
+		form:CheckBox("#owa.ui.settings.hud.halo.enemy", "owa_hud_halos_ally")
+	end)
+	
+	addOWASettingsPage("Inteface", "Interface", function(form)
+		languageComboBox = form:ComboBox("#owa.ui.settings.interface.language", "owa_ui_language")
+		combobox:AddChoice("English", "en")
+		combobox:AddChoice("Русский", "ru")
 	end)
 end)
 
@@ -22,13 +35,13 @@ permissionEditor_selection_hero = nil
 permissionEditor = vgui.Create("DFrame")
 permissionEditor:Center()
 permissionEditor:SetSize(100, 1000)
-permissionEditor:SetTitle("Permissions")
+permissionEditor:SetTitle("#owa.ui.frame.permission.title")
 permissionEditor:SetDraggable(true)
 
 playersList = vgui.Create("DListView", permissionEditor)
 playersList:Dock(LEFT)
 playersList:SetMultiSelect(false)
-playersList:AddColumn("Player")
+playersList:AddColumn("#owa.ui.frame.permission.player")
 for _, player in pairs(player.GetAll()) do
 	playersList:AddLine(player:Nick())
 end
@@ -40,7 +53,7 @@ end
 heroList = vgui.Create("DListView", permissionEditor)
 heroList:Dock(LEFT)
 heroList:SetMultiSelect(false)
-heroList:AddColumn("Hero")
+heroList:AddColumn("#owa.ui.frame.permission.hero")
 for _, hero in pairs(OWAHeroManager.HEROES) do
 	playersList:AddLine(hero.name)
 end

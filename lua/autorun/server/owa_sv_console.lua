@@ -1,2 +1,0 @@
-CreateConVar("owa_hud_halos_ally", 1, {FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Whether to draw ally halos.")
-CreateConVar("owa_hud_halos_enemy", 1, {FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Whether to draw enemy halos.")
