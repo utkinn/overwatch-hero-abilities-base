@@ -10,3 +10,7 @@ setmetatable(OverwatchAbility, {__call = function(name, description, cast, coold
 		cooldown = cooldown or 10
 	}, OverwatchAbility)
 end})
+
+function OverwatchAbility:setCastSound(sound)
+	self.castSound = sound
+end

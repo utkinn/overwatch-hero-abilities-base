@@ -15,3 +15,7 @@ setmetatable(OverwatchHero, {__call = function(name, description, abilities, ult
 		table.insert(OWAHeroManager.HEROES, name)
 	}, OverwatchHero)
 end})
+
+function OverwatchHero:getAbility(index)
+	return self.abilities[index]
+end
