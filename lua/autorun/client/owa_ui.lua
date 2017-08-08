@@ -22,10 +22,17 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 		form:CheckBox("#owa.ui.settings.hud.halo.enemy", "owa_hud_halos_ally")
 	end)
 	
-	addOWASettingsPage("Inteface", "Interface", function(form)
+	addOWASettingsPage("#owa.ui.settings.interface", "Interface", function(form)
 		languageComboBox = form:ComboBox("#owa.ui.settings.interface.language", "owa_ui_language")
 		combobox:AddChoice("English", "en")
 		combobox:AddChoice("Русский", "ru")
+	end)
+	
+	addOWASettingsPage("#hero", "Hero", function(form)
+		heroComboBox = form:ComboBox("#hero", "owa_hero")
+		for _, hero in pairs(OWAHeroManager.HEROES)
+			heroComboBox:AddChoice(hero:getName())
+		end
 	end)
 end)
 
@@ -41,7 +48,7 @@ permissionEditor:SetDraggable(true)
 playersList = vgui.Create("DListView", permissionEditor)
 playersList:Dock(LEFT)
 playersList:SetMultiSelect(false)
-playersList:AddColumn("#owa.ui.frame.permission.player")
+playersList:AddColumn("#player")
 for _, player in pairs(player.GetAll()) do
 	playersList:AddLine(player:Nick())
 end
@@ -53,7 +60,7 @@ end
 heroList = vgui.Create("DListView", permissionEditor)
 heroList:Dock(LEFT)
 heroList:SetMultiSelect(false)
-heroList:AddColumn("#owa.ui.frame.permission.hero")
+heroList:AddColumn("#hero")
 for _, hero in pairs(OWAHeroManager.HEROES) do
 	playersList:AddLine(hero.name)
 end

@@ -26,6 +26,9 @@ add("owa.consoleHelp.owa_hud_halos_ally",
 add("owa.consoleHelp.owa_hud_halos_enemy",
 "Whether to draw enemy halos.")
 
+add("owa.consoleHelp.owa_suicide_on_hero_change",
+"Automatically suicide on hero change."
+
 add("owa.consoleHelp.owa_hero",
 "Change your current hero.")
 
@@ -47,8 +50,14 @@ add("owa.ui.settings.hud.halo.enemy",
 add("owa.ui.frame.permission.title",
 "Permissions")
 
-add("owa.ui.frame.permission.player",
+add("owa.ui.respawnRequired",
+"You will change your hero on next respawn.")
+
+add("player",
 "Player")
 
-add("owa.ui.frame.permission.hero",
+add("hero",
 "Hero")
+
+add("owa.ui.settings.interface",
+"Interface")
