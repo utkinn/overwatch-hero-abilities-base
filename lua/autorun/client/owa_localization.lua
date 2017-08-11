@@ -19,7 +19,6 @@ add("owa.consoleHelp.owa_ui_hero.invalid",
 add("owa.ui.settings.category",
 "Overwatch Abilities Settings")
 
---add(, )
 add("owa.consoleHelp.owa_hud_halos_ally",
 "Whether to draw ally halos.")
 
@@ -61,3 +60,21 @@ add("hero",
 
 add("owa.ui.settings.interface",
 "Interface")
+
+add("owa.ui.frame.permission.all.disable",
+"Disable everything")
+
+add("owa.ui.frame.permission.all.enable",
+"Enable everything")
+
+add("owa.ui.frame.permission.player.restrictAllHeroes",
+"Restrict all heroes to player")
+
+add("owa.ui.frame.permission.player.allowAllHeroes",
+"Allow all heroes to player")
+
+add("owa.ui.frame.permission.hero.restrictToAllPlayers",
+"Restrict this hero to all players")
+
+add("owa.ui.frame.permission.hero.allowToAllPlayers",
+"Allow this hero to all players")
