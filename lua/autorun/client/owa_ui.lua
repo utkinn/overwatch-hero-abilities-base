@@ -1,4 +1,5 @@
 require("OWAHeroManager")
+require("OWAPermissionManager")
 
 LANGUAGE = {EN = "en", RU = "ru")
 
@@ -53,7 +54,7 @@ for _, player in pairs(player.GetAll()) do
 	playersList:AddLine(player:Nick())
 end
 function playersList:OnRowsSelected(index, row)
-	permissionEditor_selection_player = player.GetAll()[index]
+	--permissionEditor_selection_player = player.GetAll()[index]
 	--TODO
 end
 
@@ -65,10 +66,67 @@ for _, hero in pairs(OWAHeroManager.HEROES) do
 	playersList:AddLine(hero.name)
 end
 function playersList:OnRowsSelected(index, row)
-	permissionEditor_selection_player = OWAHeroManager.HEROES[index]
+	permissionEditor_selection_hero = OWAHeroManager.HEROES[index]
 	--TODO
+end
+
+selectionMode = vgui.Create("DComboBox", permissionEditor)
+selectionMode:Dock(TOP)
+selectionMode:AddChoice("All")
+selectionMode:AddChoice("Player")
+selectionMode:AddChoice("Hero")
+selectionMode:AddChoice("Player & Hero")
+selectionMode:ChooseOptionID(1)
+function selectionMode:OnSelect(index, value)
+	managementPanel:Clear()
+	if index == 1 then
+		local disableButton = vgui.Create("DButton")
+		restrictAllHeroesButton:SetText("#owa.ui.frame.permission.all.disable")
+		restrictAllHeroesButton.DoClick = function()
+			OWAPermissionManager.setHeroPermission(player.GetAll(), OWAHeroManager.HEROES, false)
+		end
+		
+		local disableButton = vgui.Create("DButton")
+		restrictAllHeroesButton:SetText("#owa.ui.frame.permission.all.enable")
+		restrictAllHeroesButton.DoClick = function()
+			OWAPermissionManager.setHeroPermission(player.GetAll(), OWAHeroManager.HEROES, true)
+		end
+	elseif index == 2 then	--Mode: Player
+		local restrictAllHeroesButton = vgui.Create("DButton")
+		restrictAllHeroesButton:SetText("#owa.ui.frame.permission.player.restrictAllHeroes")
+		restrictAllHeroesButton.DoClick = function()
+			OWAPermissionManager.setHeroPermission(Player(playersList:GetSelectedLine()), OWAHeroManager.HEROES, false)
+		end
+		
+		local allowAllHeroesButton = vgui.Create("DButton")
+		allowAllHeroesButton:SetText("#owa.ui.frame.permission.player.allowAllHeroes")
+		restrictAllHeroesButton.DoClick = function()
+			OWAPermissionManager.setHeroPermission(Player(playersList:GetSelectedLine()), OWAHeroManager.HEROES, true)
+		end
+	elseif index == 3 then	--Mode: Hero
+		local restrictToAllPlayersButton = vgui.Create("DButton")
+		restrictToAllPlayersButton:SetText("#owa.ui.frame.permission.hero.restrictToAllPlayers")
+		restrictToAllPlayersButton.DoClick = function()
+			for _, vPlayer in pairs(player.GetAll()) do
+				if not vPlayer:IsAdmin() then
+					OWAPermissionManager.setHeroPermission(vPlayer, OWAHeroManager.HEROES[playersList:GetSelectedLine()], false)
+				end
+			end
+		end
+		
+		local allowToAllPlayersButton = vgui.Create("DButton")
+		restrictToAllPlayersButton:SetText("#owa.ui.frame.permission.hero.allowToAllPlayers")
+		restrictToAllPlayersButton.DoClick = function()
+			for _, vPlayer in pairs(player.GetAll()) do
+				if not vPlayer:IsAdmin() then
+					OWAPermissionManager.setHeroPermission(vPlayer, OWAHeroManager.HEROES[playersList:GetSelectedLine()], true)
+				end
+			end
+		end
+	elseif mode == 4 then	--Mode: Player & HEROES
+		
+	end
 end
 
 managementPanel = vgui.Create("DPanel", permissionEditor)
 managementPanel:Dock(RIGHT)
---TODO
