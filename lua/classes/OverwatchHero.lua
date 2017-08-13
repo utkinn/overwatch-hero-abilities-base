@@ -15,9 +15,10 @@ setmetatable(OverwatchHero, {__call = function(infoTable)
 		armor = infoTable.armor or 0,
 		shield = infoTable.shield or 0,
 		speed = infoTable.speed or 100,
-		
-		table.insert(OWAHeroManager.HEROES, name)
+		weapons = infoTable.weapons or {}
 	}, OverwatchHero)
+	
+	table.insert(OWAHeroManager.HEROES, name)
 end})
 
 function OverwatchHero:getName()

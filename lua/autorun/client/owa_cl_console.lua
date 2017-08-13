@@ -13,7 +13,7 @@ cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
 		if GetConVar("owa_suicide_on_hero_change"):GetBool() and LocalPlayer():Alive() then
 			LocalPlayer:Kill()
 		else
-			chat.AddText("#owa.ui.respawnRequired")
+			chat.AddText("#owa.ui.chat.respawnRequired")
 		end
 	end
 
@@ -30,10 +30,15 @@ cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
 end, "validateHeroChangeInput")
 
 concommand.Add("owa_castAbility", function(player, _, args)
-	--local hero = OWAHeroManager.getHeroByName(player:GetNWString("hero"))
-	
-	--hero:getAbility(args[1]):cast(player)
 	net.Start("abilityCastRequest")
 	net.WriteUInt(args[1], 3)
 	net.SendToServer()
 end)
+
+CreateClientConVar("owa_ui_language", "en", true, false, language.GetPhrase("owa.consoleHelp.owa_ui_language"))
+cvars.AddChangeCallback("owa_ui_language", function(conVar, oldLanguage, newLanguage)
+	if newLanguage ~= "en" and newLanguage ~= "ru" then
+		MsgC(Color( 255, 0, 0 ), "Invalid language.\n")
+		conVar:SetString(oldLanguage)
+	end
+end, "validateUILanguageChange")

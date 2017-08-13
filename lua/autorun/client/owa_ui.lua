@@ -130,3 +130,7 @@ end
 
 managementPanel = vgui.Create("DPanel", permissionEditor)
 managementPanel:Dock(RIGHT)
+
+net.Receive("allyChangedHero", function()
+	chat.AddText(Color(181, 150, 70), net.ReadString() .. "#owa.ui.chat.allyChangedHero.1" .. net.ReadString() .. ".")
+end)

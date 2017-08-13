@@ -31,6 +31,9 @@ add("owa.consoleHelp.owa_suicide_on_hero_change",
 add("owa.consoleHelp.owa_hero",
 "Change your current hero.")
 
+add("owa.consoleHelp.owa_ui_language",
+"Your addon interface language. Changing it will require reconnecting.")
+
 add("owa.ui.settings.admin",
 "Admin Settings")
 
@@ -49,8 +52,14 @@ add("owa.ui.settings.hud.halo.enemy",
 add("owa.ui.frame.permission.title",
 "Permissions")
 
-add("owa.ui.respawnRequired",
+add("owa.ui.chat.respawnRequired",
 "You will change your hero on next respawn.")
+
+add("owa.ui.chat.allyChangedHero.1",
+" switched to ")
+
+add("owa.ui.chat.allyChangedHero.2",
+" (was ")
 
 add("player",
 "Player")
