@@ -1,8 +1,8 @@
-concomand.add("owa_ui_permissions", function(player)
+concommand.Add("owa_ui_permissions", function(player)
 	if player:IsAdmin() then
 		--Open permissions window
 	end
-end, nil, language.GetPhrase("owa.consoleHelp.owa_ui_permissions") )
+end, nil, language.GetPhrase("owa.consoleHelp.owa_ui_permissions"))
 
 CreateClientConVar("owa_hud_halos_ally", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_ally"))
 CreateClientConVar("owa_hud_halos_enemy", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_enemy"))

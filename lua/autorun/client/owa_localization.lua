@@ -1,7 +1,7 @@
 function add(code, en, ru)
-	if userLanguage == LANGUAGE.EN then
+	if userLanguage == "en" then
 		language.Add(code, en)
-	elseif userLanguage == LANGUAGE.RU then
+	elseif userLanguage == "ru" then
 		if ru then
 			language.Add(code, ru)
 		else
@@ -26,7 +26,7 @@ add("owa.consoleHelp.owa_hud_halos_enemy",
 "Whether to draw enemy halos.")
 
 add("owa.consoleHelp.owa_suicide_on_hero_change",
-"Automatically suicide on hero change."
+"Automatically suicide on hero change.")
 
 add("owa.consoleHelp.owa_hero",
 "Change your current hero.")

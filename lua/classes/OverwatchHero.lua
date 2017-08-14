@@ -5,6 +5,8 @@ OverwatchHero = {}
 OverwatchHero.__index = OverwatchHero
 
 setmetatable(OverwatchHero, {__call = function(infoTable)
+	table.insert(OWAHeroManager.HEROES, name)
+	
 	return setmetatable(
 	{
 		name = infoTable.name or "Mister X",
@@ -17,8 +19,6 @@ setmetatable(OverwatchHero, {__call = function(infoTable)
 		speed = infoTable.speed or 100,
 		weapons = infoTable.weapons or {}
 	}, OverwatchHero)
-	
-	table.insert(OWAHeroManager.HEROES, name)
 end})
 
 function OverwatchHero:getName()
