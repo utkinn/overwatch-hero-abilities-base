@@ -1,5 +1,3 @@
-print("owa_sv_hero_loader")
-
 --Loading serverside files
 for _, v in pairs(file.Find("overwatchHeroes/*/server", "LUA")) do
 	include(v)

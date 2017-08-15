@@ -17,10 +17,12 @@ phrases =
 	["player"] = {"Player", "Игрок"},
 	["hero"] = {"Hero", "Герой"},
 	["ui.settings.interface"] = {"Interface", "Интерфейс"},
-	["ui.heroSettings.category"] = {"Overwatch Abilities Settings: Heroes", "Настройки Способностей Overwatch: Герои"}
+	["ui.settings.interface.language"] = {"Language", "Язык"},
+	["ui.heroSettings.category"] = {"Overwatch Abilities Settings: Heroes", "Настройки Способностей Overwatch: Герои"},
+	["controls"] = {"Controls", "Управление"}
 }
 
-local userLanguage = GetConVar("owa_ui_language"):GetString("en")
+local userLanguage = GetConVar("owa_ui_language"):GetString()
 for code, phrasesTable in pairs(phrases) do
 	for _, vPhrase in pairs(phrasesTable) do
 		if userLanguage == "en" then

@@ -1,3 +1,5 @@
+require("OWAHeroManager")
+
 function signal(signalName, player)
 	net.Start(signalName)
 	if SERVER then

@@ -33,18 +33,18 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 	
 	addOWASettingsPage("#owa.ui.settings.interface", "Interface", function(form)
 		languageComboBox = form:ComboBox("#owa.ui.settings.interface.language", "owa_ui_language")
-		combobox:AddChoice("English", "en")
-		combobox:AddChoice("Русский", "ru")
+		languageComboBox:AddChoice("English", "en")
+		languageComboBox:AddChoice("Русский", "ru")
 	end)
 	
-	addOWASettingsPage("#hero", "Hero", function(form)
-		heroComboBox = form:ComboBox("#hero", "owa_hero")
+	addOWASettingsPage("#owa.hero", "Hero", function(form)
+		heroComboBox = form:ComboBox("#owa.hero", "owa_hero")
 		for _, hero in pairs(OWAHeroManager.HEROES) do
 			heroComboBox:AddChoice(hero:getName())
 		end
 	end)
 	
-	addOWASettingsPage("Controls", "Controls", function(form)
+	addOWASettingsPage("#owa.controls", "Controls", function(form)
 		--TODO: Controls
 	end)
 	
