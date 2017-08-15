@@ -32,7 +32,7 @@ end, "validateHeroChangeInput")
 
 concommand.Add("owa_castAbility", function(player, _, args)
 	net.Start("abilityCastRequest")
-	net.WriteUInt(args[1], 3)
+		net.WriteUInt(args[1], 3)
 	net.SendToServer()
 end)
 

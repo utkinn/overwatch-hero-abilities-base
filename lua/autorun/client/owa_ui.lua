@@ -6,18 +6,21 @@ end
 
 function addOWAHeroSettingsPage(hero)
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. hero:getName(), hero:getName(), nil, nil, function(form)
-		--TODO: Hero customization
-		for _, ability in pairs(hero.abilities) do
-			form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero:getName() .. ".ability:" .. ability.name .. ".cooldown", 0, 100)
-		end
-		for _, customSetting in pairs(hero.customSettings) do
-			form:NumSlider(customSetting.name, "owa_hero_customisation:" .. hero:getName() .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
-			if customSetting.help then
-				form:Help(customSetting.help)
+		if LocalPlayer():IsAdmin() then
+			for _, ability in pairs(hero.abilities) do
+				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero:getName() .. ".ability:" .. ability.name .. ".cooldown", 0, 100)
 			end
-		end
-		if hero.ultimate then
-			form:NumberWang(ability.name .. ": charge multiplier", "owa_hero_customization:" .. hero:getName() .. ".ultimate.mult", 0, 100)
+			for _, customSetting in pairs(hero.customSettings) do
+				form:NumSlider(customSetting.name, "owa_hero_customisation:" .. hero:getName() .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+				if customSetting.help then
+					form:Help(customSetting.help)
+				end
+			end
+			if hero.ultimate then
+				form:NumberWang(ability.name .. ": charge multiplier", "owa_hero_customization:" .. hero:getName() .. ".ultimate.mult", 0, 100)
+			end
+		else
+			form:Help("#ui.settings.admin.denied")
 		end
 	end) 
 end
