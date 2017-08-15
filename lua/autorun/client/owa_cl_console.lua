@@ -1,6 +1,6 @@
 concommand.Add("owa_ui_permissions", function(player)
 	if player:IsAdmin() then
-		--Open permissions window
+		showPermissionsMenu()
 	end
 end, nil, language.GetPhrase("owa.consoleHelp.owa_ui_permissions"))
 
