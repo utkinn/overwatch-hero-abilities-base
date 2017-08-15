@@ -17,7 +17,8 @@ setmetatable(OverwatchHero,
 			armor = infoTable.armor or 0,
 			shield = infoTable.shield or 0,
 			speed = infoTable.speed or 100,
-			weapons = infoTable.weapons or {}
+			weapons = infoTable.weapons or {},
+			customSettings = infoTable.customSettings
 		}
 	
 		OWAHeroManager.HEROES[name] = newHero
@@ -52,7 +53,21 @@ function OverwatchHero:getAbility(index)
 	return OWAHeroManager.HEROES[self.link].abilities[index]
 end
 
+function OverwatchHero:getAllAbilities()
+	return OWAHeroManager.HEROES[self.link].abilities
+end
+
 function OverwatchHero:setAbility(index, ability)
 	--TODO: Add ability parameter check
 	OWAHeroManager.HEROES[self.link].abilities[index] = ability
+end
+
+function OverwatchHero:addCustomSetting(name, convar, help, default, minValue, maxValue)
+	--TODO: Boolean
+	OWAHeroManager.HEROES[self.link].customSettings[name] = {convar = convar, help = help, default = default, minValue = minValue, maxValue = maxValue}
+end
+
+function OverwatchHero:getCustomSetting(name)
+	--TODO: Boolean
+	return OWAHeroManager.HEROES[self.link].customSettings[name]
 end
