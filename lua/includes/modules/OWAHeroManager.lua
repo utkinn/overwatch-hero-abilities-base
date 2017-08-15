@@ -2,15 +2,16 @@ module("OWAHeroManager", package.seeall)
 
 OWAHeroManager.HEROES = {}
 
-function OWAHeroManager.getHeroByName(name)
-	for _, hero in pairs(OWAHeroManager.HEROES) do
-		if hero:getName() == name then
-			return hero
-		end
-	end
-end
+-- function OWAHeroManager.getHeroByName(name)
+	-- for _, hero in pairs(OWAHeroManager.HEROES) do
+		-- if hero:getName() == name then
+			-- return hero
+		-- end
+	-- end
+-- end
 
 function OWAHeroManager.setPlayerHero(player, hero)
+	if hero:getName() == "none" then return end
 	player:SetNWString("hero", hero:getName())
 	
 	player:SetMaxHealth(hero:getHealth())
@@ -21,14 +22,14 @@ function OWAHeroManager.setPlayerHero(player, hero)
 	player:SetWalkSpeed(hero:getSpeed())
 	player:SetRunSpeed(hero:getSpeed() * 2)
 	
-	for _, v in pairs(hero:getWeapons()) do
-		player:Give(v)
+	for _, weapon in pairs(hero:getWeapons()) do
+		player:Give(weapon)
 	end
 	
-	for _, v in pairs(team.GetPlayers(player:Team())) do
+	for _, broadcastTarget in pairs(team.GetPlayers(player:Team())) do
 		net.Start("allyChangedHero")
 			net.WriteString(player:Nick())
 			net.WriteString(hero:getName())
-		net.Send(v)
+		net.Send(broadcastTarget)
 	end
 end
