@@ -8,6 +8,7 @@ CreateClientConVar("owa_hud_halos_ally", 1, true, false, language.GetPhrase("owa
 CreateClientConVar("owa_hud_halos_enemy", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_enemy"))
 CreateClientConVar("owa_hero", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_hero"))
 CreateClientConVar("owa_suicide_on_hero_change", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_suicide_on_hero_change"))
+CreateClientConVar("owa_hero_callouts", "0", true, true, "Play heroes' callouts on ability usages.")
 cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
 	if oldHeroName ~= newHeroName then
 		if GetConVar("owa_suicide_on_hero_change"):GetBool() and LocalPlayer():Alive() then
@@ -31,7 +32,7 @@ end, "validateHeroChangeInput")
 
 concommand.Add("owa_castAbility", function(player, _, args)
 	net.Start("abilityCastRequest")
-	net.WriteUInt(args[1], 3)
+		net.WriteUInt(args[1], 3)
 	net.SendToServer()
 end)
 
