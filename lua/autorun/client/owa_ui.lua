@@ -1,5 +1,3 @@
-require("OWAHeroManager")
-
 function addOWASettingsPage(name, class, DFormBuild)
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.settings.category", "OWA" .. class, name, nil, nil, DFormBuild) 
 end
@@ -39,7 +37,7 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 	
 	addOWASettingsPage("#owa.hero", "Hero", function(form)
 		heroComboBox = form:ComboBox("#owa.hero", "owa_hero")
-		for _, hero in pairs(OWAHeroManager.HEROES) do
+		for _, hero in pairs(HEROES) do
 			heroComboBox:AddChoice(hero:getName())
 		end
 	end)
@@ -48,7 +46,7 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 		--TODO: Controls
 	end)
 	
-	for _, hero in pairs(OWAHeroManager.HEROES) do
+	for _, hero in pairs(HEROES) do
 		addOWAHeroSettingsPage(hero)
 	end
 end)

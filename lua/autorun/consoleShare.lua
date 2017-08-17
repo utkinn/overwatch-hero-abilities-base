@@ -1,4 +1,5 @@
-require("OWAHeroManager")
+include("heroTableDeclaration.lua")
+AddCSLuaFile("heroTableDeclaration.lua")
 
 function signal(signalName, player)
 	net.Start(signalName)
@@ -19,7 +20,7 @@ adminConVars =
 }
 
 --TODO: Hero customization
-for _, hero in pairs(OWAHeroManager.HEROES) do
+for _, hero in pairs(HEROES) do
 	for _, ability in pairs(hero.abilities) do
 		table.insert(adminConVars, CreateConVar("owa_hero_customisation:" .. hero:getName() .. ".ability:" .. ability.name .. ".cooldown", ability.cooldown, flags, "Change the cooldown of the " .. hero:getName() .. "'s \"" .. ability.name .. "\" ability."))
 	end

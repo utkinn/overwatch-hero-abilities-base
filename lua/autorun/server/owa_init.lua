@@ -13,7 +13,7 @@ util.AddNetworkString("openPermissionsMenu")
 util.AddNetworkString("ultimateCastRequest")
 
 hook.Add("PlayerSpawn", "setHero", function(player)
-	local heroToSet = OWAHeroManager.HEROES[player:GetInfo("owa_hero")]
+	local heroToSet = HEROES[player:GetInfo("owa_hero")]
 	if heroToSet ~= nil then
 		OWAHeroManager.setPlayerHero(player, heroToSet)
 	end
@@ -31,8 +31,8 @@ hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemain
 	timer.Simple(3, function()
 		timer.Create("restoreShield:" .. victim:Nick(), 0.1, 0, function()
 			local newValue = victim:GetNWInt("shield") + 3
-			if newValue > OWAHeroManager.HEROES[victim:GetNWString("hero")]:getShield() then
-				newValue = OWAHeroManager.HEROES[victim:GetNWString("hero")]:getShield()
+			if newValue > HEROES[victim:GetNWString("hero")]:getShield() then
+				newValue = HEROES[victim:GetNWString("hero")]:getShield()
 				timer.Remove("restoreShield:" .. victim:Nick())
 			end
 			
@@ -43,7 +43,7 @@ end)
 
 net.Receive("abilityCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
-	local hero = OWAHeroManager.HEROES[heroName]
+	local hero = HEROES[heroName]
 	local ability = net.ReadUInt(3)
 	local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
 	
@@ -66,7 +66,7 @@ end)
 
 net.Receive("ultimateCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
-	local hero = OWAHeroManager.HEROES[heroName]
+	local hero = HEROES[heroName]
 	
 	if player:GetNWInt("ultimateCharge") == hero.ultimate.pointsRequired then
 		local success = hero.ultimate:cast(player)

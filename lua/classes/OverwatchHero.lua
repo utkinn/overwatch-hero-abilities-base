@@ -1,5 +1,5 @@
 include("classes/OverwatchAbility.lua")
-require("OWAHeroManager")
+include("heroTableDeclaration.lua")
 
 OverwatchHero = {}
 OverwatchHero.__index = OverwatchHero
@@ -21,7 +21,7 @@ setmetatable(OverwatchHero,
 			customSettings = infoTable.customSettings
 		}
 	
-		OWAHeroManager.HEROES[name] = newHero
+		HEROES[name] = newHero
 		
 		local link = {link = infoTable.name or "Mister X"}
 		
@@ -30,44 +30,44 @@ setmetatable(OverwatchHero,
 })
 
 function OverwatchHero:getName()
-	return OWAHeroManager.HEROES[self.link].name
+	return HEROES[self.link].name
 end
 
 function OverwatchHero:getHealth()
-	return OWAHeroManager.HEROES[self.link].health
+	return HEROES[self.link].health
 end
 
 function OverwatchHero:getArmor()
-	return OWAHeroManager.HEROES[self.link].armor
+	return HEROES[self.link].armor
 end
 
 function OverwatchHero:getShield()
-	return OWAHeroManager.HEROES[self.link].shield
+	return HEROES[self.link].shield
 end
 
 function OverwatchHero:getSpeed()
-	return OWAHeroManager.HEROES[self.link].speed
+	return HEROES[self.link].speed
 end
 
 function OverwatchHero:getAbility(index)
-	return OWAHeroManager.HEROES[self.link].abilities[index]
+	return HEROES[self.link].abilities[index]
 end
 
 function OverwatchHero:getAllAbilities()
-	return OWAHeroManager.HEROES[self.link].abilities
+	return HEROES[self.link].abilities
 end
 
 function OverwatchHero:setAbility(index, ability)
 	--TODO: Add ability parameter check
-	OWAHeroManager.HEROES[self.link].abilities[index] = ability
+	HEROES[self.link].abilities[index] = ability
 end
 
 function OverwatchHero:addCustomSetting(name, convar, help, default, minValue, maxValue)
 	--TODO: Boolean
-	OWAHeroManager.HEROES[self.link].customSettings[name] = {convar = convar, help = help, default = default, minValue = minValue, maxValue = maxValue}
+	HEROES[self.link].customSettings[name] = {convar = convar, help = help, default = default, minValue = minValue, maxValue = maxValue}
 end
 
 function OverwatchHero:getCustomSetting(name)
 	--TODO: Boolean
-	return OWAHeroManager.HEROES[self.link].customSettings[name]
+	return HEROES[self.link].customSettings[name]
 end
