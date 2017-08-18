@@ -1,5 +1,4 @@
 include("classes/OverwatchAbility.lua")
-include("heroTableDeclaration.lua")
 
 OverwatchHero = {}
 OverwatchHero.__index = OverwatchHero
