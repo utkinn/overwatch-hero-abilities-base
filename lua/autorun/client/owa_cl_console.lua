@@ -10,23 +10,23 @@ CreateClientConVar("owa_hero", "none", true, true, language.GetPhrase("owa.conso
 CreateClientConVar("owa_suicide_on_hero_change", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_suicide_on_hero_change"))
 CreateClientConVar("owa_hero_callouts", "0", true, true, "Play heroes' callouts on ability usages.")
 cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
-	if oldHeroName ~= newHeroName then
+	local validHero = false
+
+	for _, hero in pairs(HEROES) do
+		if newHeroName == hero.name then validHero = true end
+	end
+	
+	if newHeroName == "none" then validHero = true end
+	
+	if not validHero then
+		GetConVar("owa_hero"):SetString(oldHeroName)
+		MsgC(Color(255, 0, 0), language.GetPhrase("owa.consoleHelp.owa_ui_hero.invalid"))
+	elseif oldHeroName ~= newHeroName then
 		if GetConVar("owa_suicide_on_hero_change"):GetBool() and LocalPlayer():Alive() then
 			LocalPlayer:Kill()
 		else
 			chat.AddText("#owa.ui.chat.respawnRequired")
 		end
-	end
-
-	local validHero = false
-
-	for _, hero in pairs(OWAHeroManager.HEROES) do
-		if newHeroName == hero:getName() then validHero = true end
-	end
-	
-	if not validHero then
-		conVar:SetString(oldHeroName)
-		MsgC(Color(255, 0, 0), language.GetPhrase("owa.consoleHelp.owa_ui_hero.invalid"))
 	end
 end, "validateHeroChangeInput")
 

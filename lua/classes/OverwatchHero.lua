@@ -17,10 +17,12 @@ setmetatable(OverwatchHero,
 			shield = infoTable.shield or 0,
 			speed = infoTable.speed or 100,
 			weapons = infoTable.weapons or {},
-			customSettings = infoTable.customSettings
+			customSettings = infoTable.customSettings or {},
+			abilityMaterials = abilityMaterials or {},
+			ultimateMaterial = ultimateMaterial or Material("OWAMaterialError.jpeg")
 		}
 	
-		HEROES[name] = newHero
+		HEROES[infoTable.name or "Mister X"] = newHero
 		
 		local link = {link = infoTable.name or "Mister X"}
 		

@@ -12,10 +12,33 @@ util.AddNetworkString("abilityCastSuccess")
 util.AddNetworkString("openPermissionsMenu")
 util.AddNetworkString("ultimateCastRequest")
 
+function setPlayerHero(player, hero)
+	if hero.name == "none" then return end
+	player:SetNWString("hero", hero.name)
+	
+	player:SetMaxHealth(hero.health)
+	player:SetHealth(hero.health)
+	player:SetArmor(hero.armor)
+	player:SetNWInt("shield", hero.shield)
+	player:SetWalkSpeed(hero.speed)
+	player:SetRunSpeed(hero.speed * 2)
+	
+	for _, weapon in pairs(hero.weapons) do
+		player:Give(weapon)
+	end
+	
+	for _, broadcastTarget in pairs(team.GetPlayers(player:Team())) do
+		net.Start("allyChangedHero")
+			net.WriteString(player:Nick())
+			net.WriteString(hero.name)
+		net.Send(broadcastTarget)
+	end
+end
+
 hook.Add("PlayerSpawn", "setHero", function(player)
 	local heroToSet = HEROES[player:GetInfo("owa_hero")]
 	if heroToSet ~= nil then
-		OWAHeroManager.setPlayerHero(player, heroToSet)
+		setPlayerHero(player, heroToSet)
 	end
 end)
 

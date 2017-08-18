@@ -2,20 +2,22 @@ function addOWASettingsPage(name, class, DFormBuild)
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.settings.category", "OWA" .. class, name, nil, nil, DFormBuild) 
 end
 
-function addOWAHeroSettingsPage(hero)
-	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. hero:getName(), hero:getName(), nil, nil, function(form)
+function addOWAHeroSettingsPage(heroName)
+	local hero = HEROES[heroName]
+	
+	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. hero.name, hero.name, nil, nil, function(form)
 		if LocalPlayer():IsAdmin() then
 			for _, ability in pairs(hero.abilities) do
-				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero:getName() .. ".ability:" .. ability.name .. ".cooldown", 0, 100)
+				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero.name .. ".ability:" .. ability.name .. ".cooldown", 0, 100)
 			end
 			for _, customSetting in pairs(hero.customSettings) do
-				form:NumSlider(customSetting.name, "owa_hero_customisation:" .. hero:getName() .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+				form:NumSlider(customSetting.name, "owa_hero_customisation:" .. hero.name .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
 				if customSetting.help then
 					form:Help(customSetting.help)
 				end
 			end
 			if hero.ultimate then
-				form:NumberWang(ability.name .. ": charge multiplier", "owa_hero_customization:" .. hero:getName() .. ".ultimate.mult", 0, 100)
+				form:NumberWang(ability.name .. ": charge multiplier", "owa_hero_customization:" .. hero.name .. ".ultimate.mult", 0, 100)
 			end
 		else
 			form:Help("#ui.settings.admin.denied")
@@ -37,8 +39,9 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 	
 	addOWASettingsPage("#owa.hero", "Hero", function(form)
 		heroComboBox = form:ComboBox("#owa.hero", "owa_hero")
+		heroComboBox:AddChoice("none")
 		for _, hero in pairs(HEROES) do
-			heroComboBox:AddChoice(hero:getName())
+			heroComboBox:AddChoice(hero.name)
 		end
 	end)
 	
@@ -46,11 +49,11 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 		--TODO: Controls
 	end)
 	
-	for _, hero in pairs(HEROES) do
-		addOWAHeroSettingsPage(hero)
+	for heroName, _ in pairs(HEROES) do
+		addOWAHeroSettingsPage(heroName)
 	end
 end)
 
 net.Receive("allyChangedHero", function()
-	chat.AddText(Color(181, 150, 70), net.ReadString() .. "#owa.ui.chat.allyChangedHero.1" .. net.ReadString() .. ".")
+	chat.AddText(Color(181, 150, 70), net.ReadString() .. language.GetPhrase("owa.ui.chat.allyChangedHero.1") .. net.ReadString() .. ".")
 end)
