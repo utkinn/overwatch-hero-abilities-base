@@ -1,30 +1,42 @@
-include("classes/OverwatchHero.lua")
-include("classes/OverwatchAbility.lua")
-include("classes/OverwatchUltimate.lua")
-
-AddCSLuaFile("classes/OverwatchHero.lua")
-AddCSLuaFile("classes/OverwatchAbility.lua")
-AddCSLuaFile("classes/OverwatchUltimate.lua")
-
 util.AddNetworkString("allyChangedHero")
 util.AddNetworkString("abilityCastRequest")
 util.AddNetworkString("abilityCastSuccess")
 util.AddNetworkString("openPermissionsMenu")
 util.AddNetworkString("ultimateCastRequest")
 
+-- local newHero =
+-- {
+	-- name = infoTable.name or "Mister X",
+	-- description = infoTable.description or "Poor villain of indefiniteness",
+	-- abilities = infoTable.abilities or {},
+	-- ultimate = infoTable.ultimate,
+	-- health = infoTable.health or 100,
+	-- armor = infoTable.armor or 0,
+	-- shield = infoTable.shield or 0,
+	-- speed = infoTable.speed or 100,
+	-- weapons = infoTable.weapons or {},
+	-- customSettings = infoTable.customSettings or {},
+	-- abilityMaterials = abilityMaterials or {},
+	-- ultimateMaterial = ultimateMaterial or Material("OWAMaterialError.jpeg")
+-- }
+
 function setPlayerHero(player, hero)
 	if hero.name == "none" then return end
 	player:SetNWString("hero", hero.name)
 	
-	player:SetMaxHealth(hero.health)
-	player:SetHealth(hero.health)
-	player:SetArmor(hero.armor)
-	player:SetNWInt("shield", hero.shield)
-	player:SetWalkSpeed(hero.speed)
-	player:SetRunSpeed(hero.speed * 2)
+	player:SetMaxHealth(hero.health or 100)
+	player:SetHealth(hero.health or 100)
+	player:SetArmor(hero.armor or 0)
+	player:SetNWInt("shield", hero.shield or 0)
+	if hero.speed ~= nil then
+		player:SetWalkSpeed(hero.speed * 2)
+		player:SetRunSpeed(hero.speed * 4)
+	end
 	
-	for _, weapon in pairs(hero.weapons) do
-		player:Give(weapon)
+	if hero.weapons ~= nil then
+		for _, weapon in pairs(hero.weapons) do
+			player:Give(weapon)
+		end
 	end
 	
 	for _, broadcastTarget in pairs(team.GetPlayers(player:Team())) do

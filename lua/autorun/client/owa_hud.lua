@@ -1,8 +1,8 @@
 if LocalPlayer():GetNWString("hero") ~= "none" and LocalPlayer():GetNWString("hero") ~= nil and LocalPlayer():GetNWString("hero") ~= "" then
-	local abilityMaterials = HEROES[LocalPlayer():GetNWString("hero")].abilityMaterials
-	local ability1Material = Material(abilityMaterials[1])
-	local ability2Material = Material(abilityMaterials[2])
-	local ultimateMaterial = Material(HEROES[LocalPlayer():GetNWString("hero")].ultimateMaterial)
+	local materials = HEROES[LocalPlayer():GetNWString("hero")].materials
+	local ability1Material = Material(materials.abilities[1])
+	local ability2Material = Material(materials.abilities[2])
+	local ultimateMaterial = Material(materials.ultimate)
 	
 	TRANSPARENCY = 100
 	

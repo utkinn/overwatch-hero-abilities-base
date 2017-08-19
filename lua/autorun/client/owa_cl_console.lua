@@ -1,3 +1,9 @@
+for _, command in pairs(adminConVars) do
+	cvars.AddChangeCallback(command:GetName(), function()
+		
+	end)
+end)
+
 concommand.Add("owa_ui_permissions", function(player)
 	if player:IsAdmin() then
 		showPermissionsMenu()

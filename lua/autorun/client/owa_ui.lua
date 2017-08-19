@@ -8,16 +8,19 @@ function addOWAHeroSettingsPage(heroName)
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. (hero.name or "Unknown"), hero.name or "Unknown", nil, nil, function(form)
 		if LocalPlayer():IsAdmin() then
 			for _, ability in pairs(hero.abilities) do
-				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero.name .. ".ability:" .. ability.name .. ".cooldown", 0, 100)
+				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization." .. removeSpaces(hero.name) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
 			end
-			for _, customSetting in pairs(hero.customSettings) do
-				form:NumSlider(customSetting.name, "owa_hero_customisation:" .. hero.name .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
-				if customSetting.help then
-					form:Help(customSetting.help)
+			if hero.customSettings ~= nil then
+				for _, customSetting in pairs(hero.customSettings) do
+					form:NumSlider(customSetting.name, "owa_hero_customisation." .. removeSpaces(hero.name) .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+					if customSetting.help then
+						form:Help(customSetting.help)
+					end
 				end
 			end
 			if hero.ultimate then
-				form:NumberWang(ability.name .. ": charge multiplier", "owa_hero_customization:" .. hero.name .. ".ultimate.mult", 0, 100)
+				form:Help(hero.ultimate.name .. ": charge multiplier")
+				form:NumberWang("", "owa_hero_customization." .. removeSpaces(hero.name) .. ".ultimate.mult", 0, 100)
 			end
 		else
 			form:Help("#ui.settings.admin.denied")
