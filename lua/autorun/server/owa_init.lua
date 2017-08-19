@@ -25,16 +25,22 @@ function setPlayerHero(player, hero)
 	if hero.name == "none" then return end
 	player:SetNWString("hero", hero.name)
 	
-	player:SetMaxHealth(hero.health or 100)
-	player:SetHealth(hero.health or 100)
-	player:SetArmor(hero.armor or 0)
-	player:SetNWInt("shield", hero.shield or 0)
-	if hero.speed ~= nil then
+	if GetConVar("owa_hero_customization_affects_health"):GetBool() then
+		player:SetMaxHealth(hero.health or 100)
+		player:SetHealth(hero.health or 100)
+	end
+	if GetConVar("owa_hero_customization_affects_armor"):GetBool() then
+		player:SetArmor(hero.armor or 0)
+	end
+	if GetConVar("owa_hero_customization_affects_shield"):GetBool() then
+		player:SetNWInt("shield", hero.shield or 0)
+	end
+	if hero.speed ~= nil and GetConVar("owa_hero_customization_affects_speed"):GetBool() then
 		player:SetWalkSpeed(hero.speed * 2)
 		player:SetRunSpeed(hero.speed * 4)
 	end
 	
-	if hero.weapons ~= nil then
+	if hero.weapons ~= nil and GetConVar("owa_hero_customization_affects_weapons"):GetBool()then
 		for _, weapon in pairs(hero.weapons) do
 			player:Give(weapon)
 		end

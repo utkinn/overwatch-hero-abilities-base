@@ -5,14 +5,15 @@ end
 function addOWAHeroSettingsPage(heroName)
 	local hero = HEROES[heroName]
 	
-	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. (hero.name or "Unknown"), hero.name or "Unknown", nil, nil, function(form)
+	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. (heroName or "Unknown"), heroName or "Unknown", nil, nil, function(form)
 		if LocalPlayer():IsAdmin() then
+			form:CheckBox("Admins only", "owa_hero." .. removeSpaces(heroName) .. ".adminsOnly")
 			for _, ability in pairs(hero.abilities) do
-				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization." .. removeSpaces(hero.name) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
+				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization." .. removeSpaces(heroName) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
 			end
 			if hero.customSettings ~= nil then
 				for _, customSetting in pairs(hero.customSettings) do
-					form:NumSlider(customSetting.name, "owa_hero_customisation." .. removeSpaces(hero.name) .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+					form:NumSlider(customSetting.name, "owa_hero_customization." .. removeSpaces(heroName) .. "." .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
 					if customSetting.help then
 						form:Help(customSetting.help)
 					end
@@ -20,7 +21,7 @@ function addOWAHeroSettingsPage(heroName)
 			end
 			if hero.ultimate then
 				form:Help(hero.ultimate.name .. ": charge multiplier")
-				form:NumberWang("", "owa_hero_customization." .. removeSpaces(hero.name) .. ".ultimate.mult", 0, 100)
+				form:NumberWang("", "owa_hero_customization." .. removeSpaces(heroName) .. ".ultimate.mult", 0, 100)
 			end
 		else
 			form:Help("#ui.settings.admin.denied")
@@ -29,6 +30,15 @@ function addOWAHeroSettingsPage(heroName)
 end
 
 hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
+	addOWASettingsPage("#owa.ui.settings.admin", "Admin", function(form)
+		form:Help("#owa.ui.settings.admin.heroPlayerProperties")
+		form:CheckBox("#owa.ui.settings.admin.heroPlayerProperties.health", "owa_hero_customization_affects_health")
+		form:CheckBox("#owa.ui.settings.admin.heroPlayerProperties.armor", "owa_hero_customization_affects_armor")
+		form:CheckBox("#owa.ui.settings.admin.heroPlayerProperties.shield", "owa_hero_customization_affects_shield")
+		form:CheckBox("#owa.ui.settings.admin.heroPlayerProperties.speed", "owa_hero_customization_affects_speed")
+		form:CheckBox("#owa.ui.settings.admin.heroPlayerProperties.weapons", "owa_hero_customization_affects_weapons")
+	end)
+
 	addOWASettingsPage("HUD", "HUD", function(form)
 		form:CheckBox("#owa.ui.settings.hud.halo.ally", "owa_hud_halos_ally")
 		form:CheckBox("#owa.ui.settings.hud.halo.enemy", "owa_hud_halos_ally")

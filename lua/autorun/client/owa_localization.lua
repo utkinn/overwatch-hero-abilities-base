@@ -20,7 +20,20 @@ phrases =
 	["ui.settings.interface"] = {"Interface", "Интерфейс"},
 	["ui.settings.interface.language"] = {"Language", "Язык"},
 	["ui.heroSettings.category"] = {"Overwatch Abilities Settings: Heroes", "Настройки Способностей Overwatch: Герои"},
-	["controls"] = {"Controls", "Управление"}
+	["controls"] = {"Controls", "Управление"},
+	["consoleHelp.owa_hero_adminOnly.1"] = {"Restrict ", "Запретить играть за героя \""},
+	["consoleHelp.owa_hero_adminOnly.2"] = {" for regular players.", "\" обычным игрокам."},
+	["ui.settings.admin.heroPlayerProperties"] = {"Selected hero affects...", "Выбранный герой влияет на..."},
+	["ui.settings.admin.heroPlayerProperties.health"] = {"...health", "...здоровье"},
+	["ui.settings.admin.heroPlayerProperties.armor"] = {"...armor", "...броню"},
+	["ui.settings.admin.heroPlayerProperties.shield"] = {"...shield", "...щит"},
+	["ui.settings.admin.heroPlayerProperties.speed"] = {"...movement speed", "...скорость передвижения"},
+	["ui.settings.admin.heroPlayerProperties.weapons"] = {"...weapons", "...оружие"},
+	["consoleHelp.heroPlayerProperties.health"] = {"Does selected hero affects players' health?", "Влияет ли выбранный герой на здоровье?"},
+	["consoleHelp.heroPlayerProperties.armor"] = {"Does selected hero affects players' armor?", "Влияет ли выбранный герой на броню?"},
+	["consoleHelp.heroPlayerProperties.shield"] = {"Does selected hero affects players' shield?", "Влияет ли выбранный герой на щит?"},
+	["consoleHelp.heroPlayerProperties.speed"] = {"Does selected hero affects players' movement speed?", "Влияет ли выбранный герой на скорость?"},
+	["consoleHelp.heroPlayerProperties.weapons"] = {"Does selected hero affects players' speed?", "Влияет ли выбранный герой на оружия?"}
 }
 
 local userLanguage = GetConVar("owa_ui_language"):GetString()

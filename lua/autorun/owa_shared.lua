@@ -14,14 +14,18 @@ end
 --TODO: Add flag to client
 conVarFlags = SERVER and {FCVAR_ARCHIVE, FCVAR_REPLICATED} or FCVAR_USERINFO
 
-adminConVars = 
+adminConVars =
 {
-	--CreateConVar("tracer_blink_adminonly", 0, flags, "Allow blinking to admins only."),
-	
+	CreateConVar("owa_hero_customization_affects_health", 1, flags, language.GetPhrase("owa.consoleHelp.heroPlayerProperties.health"))
+	CreateConVar("owa_hero_customization_affects_armor", 1, flags, language.GetPhrase("owa.consoleHelp.heroPlayerProperties.armor"))
+	CreateConVar("owa_hero_customization_affects_shield", 1, flags, language.GetPhrase("owa.consoleHelp.heroPlayerProperties.shield"))
+	CreateConVar("owa_hero_customization_affects_speed", 1, flags, language.GetPhrase("owa.consoleHelp.heroPlayerProperties.speed"))
+	CreateConVar("owa_hero_customization_affects_weapons", 1, flags, language.GetPhrase("owa.consoleHelp.heroPlayerProperties.weapons"))
 }
 
 --TODO: Hero customization
 for _, hero in pairs(HEROES) do
+	table.insert(adminConVars, CreateConVar("owa_hero." .. removeSpaces(hero.name) .. ".adminsOnly", 0, flags, language.GetPhrase("owa.consoleHelp.owa_hero_adminOnly.1") .. hero.name .. language.GetPhrase("owa.consoleHelp.owa_hero_adminOnly.2")))
 	for _, ability in pairs(hero.abilities) do
 		table.insert(adminConVars, CreateConVar("owa_hero_customization." .. removeSpaces(hero.name) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", ability.cooldown, flags, "Change the cooldown of the " .. hero:getName() .. "'s \"" .. ability.name .. "\" ability."))
 	end
