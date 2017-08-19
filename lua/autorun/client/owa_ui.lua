@@ -46,6 +46,7 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 		for _, hero in pairs(HEROES) do
 			heroComboBox:AddChoice(hero.name)
 		end
+		form:CheckBox("#owa.ui.settings.auto_suicide", "owa_suicide_on_hero_change")
 	end)
 	
 	addOWASettingsPage("#owa.controls", "Controls", function(form)

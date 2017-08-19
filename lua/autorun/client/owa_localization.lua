@@ -11,6 +11,7 @@ phrases =
 	["ui.settings.admin.denied"] = {"You need the admin privilegies to watch and change these settings.", "Вам нужно иметь права администратора для изменения этих настроек."},
 	["ui.settings.hud.halo.ally"] = {"Ally halos", "Подсветка союзников"},
 	["ui.settings.hud.halo.enemy"] = {"Enemy halos", "Подсветка врагов"},
+	["ui.settings.auto_suicide"] = {"Suicide on change", "Возродиться при смене"}
 	["ui.chat.respawnRequired"] = {"You will change your hero on next respawn.", "Вы смените героя при следующем возрождении."},
 	["ui.chat.allyChangedHero.1"] = {" switched to "},
 	["ui.chat.allyChangedHero.2"] = {" (was "},

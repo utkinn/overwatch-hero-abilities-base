@@ -12,12 +12,6 @@ for _, command in pairs(adminConVars) do
 	end)
 end)
 
-concommand.Add("owa_ui_permissions", function(player)
-	if player:IsAdmin() then
-		showPermissionsMenu()
-	end
-end, nil, language.GetPhrase("owa.consoleHelp.owa_ui_permissions"))
-
 CreateClientConVar("owa_hud_halos_ally", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_ally"))
 CreateClientConVar("owa_hud_halos_enemy", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_enemy"))
 CreateClientConVar("owa_hero", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_hero"))
