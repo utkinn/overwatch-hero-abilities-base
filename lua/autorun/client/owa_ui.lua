@@ -5,7 +5,7 @@ end
 function addOWAHeroSettingsPage(heroName)
 	local hero = HEROES[heroName]
 	
-	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. hero.name, hero.name, nil, nil, function(form)
+	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. (hero.name or "Unknown"), hero.name or "Unknown", nil, nil, function(form)
 		if LocalPlayer():IsAdmin() then
 			for _, ability in pairs(hero.abilities) do
 				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization:" .. hero.name .. ".ability:" .. ability.name .. ".cooldown", 0, 100)

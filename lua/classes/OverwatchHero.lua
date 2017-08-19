@@ -3,8 +3,7 @@ include("classes/OverwatchAbility.lua")
 OverwatchHero = {}
 OverwatchHero.__index = OverwatchHero
 
-setmetatable(OverwatchHero,
-{
+setmetatable(OverwatchHero, {
 	__call = function(infoTable)
 		local newHero =
 		{
@@ -22,7 +21,7 @@ setmetatable(OverwatchHero,
 			ultimateMaterial = ultimateMaterial or Material("OWAMaterialError.jpeg")
 		}
 	
-		HEROES[infoTable.name or "Mister X"] = newHero
+		HEROES[infoTable.name or "Mister X"] = --[[newHero--]]infoTable
 		
 		local link = {link = infoTable.name or "Mister X"}
 		
