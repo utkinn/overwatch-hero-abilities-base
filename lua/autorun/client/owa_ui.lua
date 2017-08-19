@@ -1,3 +1,20 @@
+function binder(form, text, onChange, initValue)
+	local label = vgui.Create("DLabel")
+	label:SetText(text)
+
+	local binder = vgui.Create("DBinder")
+	binder:SetSize(200, 50)
+	if initValue ~= nil then binder:SetValue(initValue) end
+	
+	function binder:SetSelectedNumber(num)
+		self.m_iSelectedNumber = num -- Preserve original functionality
+		onChange(num)
+	end
+	
+	form:AddItem(label, binder)
+	return binder
+end
+
 function addOWASettingsPage(name, class, DFormBuild)
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.settings.category", "OWA" .. class, name, nil, nil, DFormBuild) 
 end
@@ -50,7 +67,15 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 	end)
 	
 	addOWASettingsPage("#owa.controls", "Controls", function(form)
-		--TODO: Controls
+		ability1Binder = binder(form, language.GetPhrase("owa.ui.settings.controls.castAbility") .. " 1", function(num)
+			updateKeyBinding("ability1", num)
+		end, controls.ability1)
+		ability2Binder = binder(form, language.GetPhrase("owa.ui.settings.controls.castAbility") .. " 2", function(num)
+			updateKeyBinding("ability2", num)
+		end, controls.ability2)
+		ultimateBinder = binder(form, "#owa.ui.settings.controls.castUltimate", function(num)
+			updateKeyBinding("ultimate", num)
+		end, controls.ultimate)
 	end)
 	
 	for heroName, _ in pairs(HEROES) do
