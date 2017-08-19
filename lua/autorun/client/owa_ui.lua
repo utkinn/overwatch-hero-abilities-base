@@ -24,7 +24,7 @@ function addOWAHeroSettingsPage(heroName)
 				form:NumberWang("", "owa_hero_customization." .. removeSpaces(heroName) .. ".ultimate.mult", 0, 100)
 			end
 		else
-			form:Help("#ui.settings.admin.denied")
+			form:Help("#owa.ui.settings.admin.denied")
 		end
 	end) 
 end

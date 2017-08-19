@@ -62,7 +62,7 @@ hook.Add("PlayerSpawn", "setHero", function(player)
 end)
 
 hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemaining, damageTaken)
-	if victim:GetNWInt("shield") ~= 0 then	--Checking if victim has a shield charge
+	if victim:GetNWInt("shield") > 0 then	--Checking if victim has a shield charge
 		victim:SetHealth(victim:Health() + damageTaken)	--Restoring damage
 		victim:SetNWInt("shield", victim:GetNWInt("shield") - damageTaken)
 		if victim:GetNWInt("shield") < 0 then	--Passing damage with broken shield
@@ -73,8 +73,8 @@ hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemain
 	timer.Simple(3, function()
 		timer.Create("restoreShield:" .. victim:Nick(), 0.1, 0, function()
 			local newValue = victim:GetNWInt("shield") + 3
-			if newValue > HEROES[victim:GetNWString("hero")]:getShield() then
-				newValue = HEROES[victim:GetNWString("hero")]:getShield()
+			if newValue > HEROES[victim:GetNWString("hero")].shield then
+				newValue = HEROES[victim:GetNWString("hero")].shield
 				timer.Remove("restoreShield:" .. victim:Nick())
 			end
 			
@@ -110,7 +110,7 @@ net.Receive("ultimateCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
 	local hero = HEROES[heroName]
 	
-	if player:GetNWInt("ultimateCharge") == hero.ultimate.pointsRequired then
+	if player:GetNWInt("ultimateCharge") >= hero.ultimate.pointsRequired then
 		local success = hero.ultimate:cast(player)
 		
 		if success then
