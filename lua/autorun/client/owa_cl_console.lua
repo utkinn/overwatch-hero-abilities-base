@@ -1,6 +1,14 @@
+--Admins' convars change handling
 for _, command in pairs(adminConVars) do
-	cvars.AddChangeCallback(command:GetName(), function()
-		
+	cvars.AddChangeCallback(command:GetName(), function(conVar, oldValue, newValue)
+		if LocalPlayer():IsAdmin() then
+			net.Start("adminConVarChanged")
+				net.WriteFloat(newValue)
+			net.SendToServer()
+		else
+			MsgC(Color(255, 0, 0), language.GetPhrase("ui.settings.admin.denied") .. "\n")
+			command:SetString(oldValue)
+		end
 	end)
 end)
 
@@ -13,7 +21,7 @@ end, nil, language.GetPhrase("owa.consoleHelp.owa_ui_permissions"))
 CreateClientConVar("owa_hud_halos_ally", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_ally"))
 CreateClientConVar("owa_hud_halos_enemy", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_enemy"))
 CreateClientConVar("owa_hero", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_hero"))
-CreateClientConVar("owa_suicide_on_hero_change", "none", true, true, language.GetPhrase("owa.consoleHelp.owa_suicide_on_hero_change"))
+CreateClientConVar("owa_suicide_on_hero_change", 0, true, true, language.GetPhrase("owa.consoleHelp.owa_suicide_on_hero_change"))
 CreateClientConVar("owa_hero_callouts", "0", true, true, "Play heroes' callouts on ability usages.")
 cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
 	local validHero = false

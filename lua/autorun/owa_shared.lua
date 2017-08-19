@@ -1,6 +1,3 @@
-include("heroTableDeclaration.lua")
-AddCSLuaFile("heroTableDeclaration.lua")
-
 function removeSpaces(str)
 	return str:Trim():Replace(" ", "_")
 end
