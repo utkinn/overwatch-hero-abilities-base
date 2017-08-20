@@ -22,8 +22,8 @@ util.AddNetworkString("adminConVarChanged")
 -- }
 
 function setPlayerHero(player, hero)
-	if hero.name == "none" then return end
 	player:SetNWString("hero", hero.name)
+	if hero.name == "none" then return end
 	
 	if GetConVar("owa_hero_customization_affects_health"):GetBool() then
 		player:SetMaxHealth(hero.health or 100)
@@ -34,6 +34,8 @@ function setPlayerHero(player, hero)
 	end
 	if GetConVar("owa_hero_customization_affects_shield"):GetBool() then
 		player:SetNWInt("shield", hero.shield or 0)
+	else
+		player:SetNWInt("shield", 0)
 	end
 	if hero.speed ~= nil and GetConVar("owa_hero_customization_affects_speed"):GetBool() then
 		player:SetWalkSpeed(hero.speed * 2)
@@ -58,33 +60,39 @@ hook.Add("PlayerSpawn", "setHero", function(player)
 	local heroToSet = HEROES[player:GetInfo("owa_hero")]
 	if heroToSet ~= nil then
 		setPlayerHero(player, heroToSet)
+	else
+		player:SetNWString("hero", "none")
 	end
 end)
 
 hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemaining, damageTaken)
-	if victim:GetNWInt("shield") > 0 then	--Checking if victim has a shield charge
-		victim:SetHealth(victim:Health() + damageTaken)	--Restoring damage
-		victim:SetNWInt("shield", victim:GetNWInt("shield") - damageTaken)
-		if victim:GetNWInt("shield") < 0 then	--Passing damage with broken shield
-			victim:SetHealth(victim:Health() - victim:GetNWInt("shield"))
-			victim:SetNWInt("shield", 0)
-		end
-	end
-	timer.Simple(3, function()
-		timer.Create("restoreShield:" .. victim:Nick(), 0.1, 0, function()
-			local newValue = victim:GetNWInt("shield") + 3
-			if newValue > HEROES[victim:GetNWString("hero")].shield then
-				newValue = HEROES[victim:GetNWString("hero")].shield
-				timer.Remove("restoreShield:" .. victim:Nick())
+	if HEROES[victim:GetNWString("hero")].shield then
+		if victim:GetNWInt("shield") > 0 then	--Checking if victim has a shield charge
+			victim:SetHealth(victim:Health() + damageTaken)	--Restoring damage
+			victim:SetNWInt("shield", victim:GetNWInt("shield") - damageTaken)
+			if victim:GetNWInt("shield") < 0 then	--Passing damage with broken shield
+				victim:SetHealth(victim:Health() - victim:GetNWInt("shield"))
+				victim:SetNWInt("shield", 0)
 			end
-			
-			victim:SetNWInt("shield", newValue)
+		end
+		timer.Simple(3, function()
+			timer.Create("restoreShield:" .. victim:Nick(), 0.1, 0, function()
+				local newValue = victim:GetNWInt("shield") + 3
+				
+				if newValue > HEROES[victim:GetNWString("hero")].shield then
+					newValue = HEROES[victim:GetNWString("hero")].shield
+					timer.Remove("restoreShield:" .. victim:Nick())
+				end
+				
+				victim:SetNWInt("shield", newValue)
+			end)
 		end)
-	end)
+	end
 end)
 
 net.Receive("abilityCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
+	if heroName == "none" then return end
 	local hero = HEROES[heroName]
 	local ability = net.ReadUInt(3)
 	local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
@@ -108,6 +116,7 @@ end)
 
 net.Receive("ultimateCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
+	if heroName == "none" then return end
 	local hero = HEROES[heroName]
 	
 	if player:GetNWInt("ultimateCharge") >= hero.ultimate.pointsRequired then
@@ -118,3 +127,7 @@ net.Receive("ultimateCastRequest", function(_, player)
 		end
 	end
 end)
+
+-- net.Receive("kill", function(_, player)
+	-- player:Kill()
+-- end

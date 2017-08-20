@@ -4,4 +4,4 @@ for _, command in pairs(adminConVars) do
 			net.WriteFloat(newValue)
 		net.Broadcast()
 	end)
-end)
+end

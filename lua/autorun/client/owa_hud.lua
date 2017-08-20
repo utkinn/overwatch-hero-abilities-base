@@ -1,25 +1,59 @@
-if LocalPlayer():GetNWString("hero") ~= "none" and LocalPlayer():GetNWString("hero") ~= nil and LocalPlayer():GetNWString("hero") ~= "" then
-	local materials = HEROES[LocalPlayer():GetNWString("hero")].materials
-	local ability1Material = Material(materials.abilities[1])
-	local ability2Material = Material(materials.abilities[2])
-	local ultimateMaterial = Material(materials.ultimate)
+hook.Add("Think", "updateHero", function()
+	heroName = LocalPlayer():GetNWString("hero")
+end)
+	-- local materials = HEROES[LocalPlayer():GetNWString("hero")].materials
+	-- PrintTable(materials)
+	-- if materials.abilities[1] then
+		-- ability1Material = Material(materials.abilities[1])
+	-- end
+	-- if materials.abilities[2] then
+		-- ability2Material = Material(materials.abilities[2])
+	-- end
+	-- if materials.ultimate then
+		-- ultimateMaterial = Material(materials.ultimate)
+	-- end
 	
-	TRANSPARENCY = 100
+TRANSPARENCY = 150
 	
-	hook.Add("HUDPaint", "DrawOWAHUD", function()
-		draw.RoundedBox(4, ScrW() * 0.65, ScrH() * 0.9, ScrW() * 0.2,  ScrH() * 0.1, Color(0, 0, 0, TRANSPARENCY))
-		surface.SetMaterial(ability1Material)
-		surface.SetDrawColor(LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. HEROES[LocalPlayer():GetNWString("hero")].ability[1].name)
-			and Color(255, 100, 100, TRANSPARENCY) or Color(255, 255, 255, TRANSPARENCY))
-		surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.05,  ScrH() * 0.05)
+hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
+	if LocalPlayer():GetNWString("hero") ~= "none" and heroName ~= "" then
+		draw.RoundedBox(8, ScrW() * 0.62, ScrH() * 0.9, ScrW() * 0.2,  ScrH() * 0.09, Color(0, 0, 0, TRANSPARENCY))
 		
-		surface.SetMaterial(ability2Material)
-		surface.SetDrawColor(LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. HEROES[LocalPlayer():GetNWString("hero")].ability[2].name)
-			and Color(255, 100, 100, TRANSPARENCY) or Color(255, 255, 255, TRANSPARENCY))
-		surface.DrawTexturedRect(ScrW() * 0.69, ScrH() * 0.92, ScrW() * 0.05,  ScrH() * 0.05)
+		local hero = HEROES[LocalPlayer():GetNWString("hero")]
+		local materials = hero.materials
 		
-		surface.SetMaterial(ultimateMaterial)
-		surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
-		surface.DrawTexturedRect(ScrW() * 0.71, ScrH() * 0.92, ScrW() * 0.05,  ScrH() * 0.05)
-	end)
-end
+		if materials.abilities[1] and not isnumber(materials.abilities[1]) and hero.abilities[1] then
+			surface.SetMaterial(materials.abilities[1])
+			local drawColor
+			if LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[1].name) ~= 0 then
+				drawColor = Color(255, 50, 50, TRANSPARENCY)
+			else
+				drawColor = Color(255, 255, 255, TRANSPARENCY)
+			end
+			surface.SetDrawColor(drawColor)
+			surface.DrawTexturedRect(ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+		end
+		
+		if materials.abilities[2] and not isnumber(materials.abilities[2]) and hero.abilities[2] then
+			surface.SetMaterial(materials.abilities[2])
+			local drawColor
+			if LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[2].name) ~= 0 then
+				drawColor = Color(255, 50, 50, TRANSPARENCY)
+			else
+				drawColor = Color(255, 255, 255, TRANSPARENCY)
+			end
+			surface.SetDrawColor(drawColor)
+			surface.DrawTexturedRect(ScrW() * 0.65, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+		end
+		
+		if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
+			surface.SetMaterial(materials.ultimate)
+			surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
+			surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+		end
+	end
+end)
+
+hook.Add("HUDPaint", "DrawShield", function()
+	
+end)

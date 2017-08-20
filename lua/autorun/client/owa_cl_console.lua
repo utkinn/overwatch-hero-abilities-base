@@ -10,7 +10,7 @@ for _, command in pairs(adminConVars) do
 			command:SetString(oldValue)
 		end
 	end)
-end)
+end
 
 CreateClientConVar("owa_hud_halos_ally", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_ally"))
 CreateClientConVar("owa_hud_halos_enemy", 1, true, false, language.GetPhrase("owa.consoleHelp.owa_hud_halos_enemy"))
@@ -31,7 +31,8 @@ cvars.AddChangeCallback("owa_hero", function(conVar, oldHeroName, newHeroName)
 		MsgC(Color(255, 0, 0), language.GetPhrase("owa.consoleHelp.owa_ui_hero.invalid"))
 	elseif oldHeroName ~= newHeroName then
 		if GetConVar("owa_suicide_on_hero_change"):GetBool() and LocalPlayer():Alive() then
-			LocalPlayer:Kill()
+			--signal("kill")
+			RunConsoleCommand("kill")
 		else
 			chat.AddText("#owa.ui.chat.respawnRequired")
 		end

@@ -26,7 +26,8 @@ function addOWAHeroSettingsPage(heroName)
 		if LocalPlayer():IsAdmin() then
 			form:CheckBox("Admins only", "owa_hero." .. removeSpaces(heroName) .. ".adminsOnly")
 			for _, ability in pairs(hero.abilities) do
-				form:NumberWang(ability.name .. ": cooldown", "owa_hero_customization." .. removeSpaces(heroName) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
+				form:Help(ability.name .. ": cooldown")
+				form:NumberWang("", "owa_hero_customization." .. removeSpaces(heroName) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
 			end
 			if hero.customSettings ~= nil then
 				for _, customSetting in pairs(hero.customSettings) do
