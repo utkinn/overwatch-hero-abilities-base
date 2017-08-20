@@ -93,12 +93,14 @@ end)
 net.Receive("abilityCastRequest", function(_, player)
 	local heroName = player:GetNWString("hero")
 	if heroName == "none" then return end
+	print("here")
 	local hero = HEROES[heroName]
 	local ability = net.ReadUInt(3)
 	local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
 	
-	if not player:GetNWInt(cooldownNWIntKey) then	--If an ability isn't cooling down
-		local success = hero.ability[ability]:cast(player)	--Casting the ability and getting the success result
+	if player:GetNWInt(cooldownNWIntKey) == 0 then	--If an ability isn't cooling down
+		print("ALMOST THERE")
+		local success = hero.abilities[ability]:cast(player)	--Casting the ability and getting the success result
 	
 		if success then	--If a cast is successful
 			player:SetNWInt(cooldownNWIntKey, hero.cooldown)	--Putting the ability to cooldown

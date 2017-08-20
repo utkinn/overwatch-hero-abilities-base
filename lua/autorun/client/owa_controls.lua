@@ -44,6 +44,7 @@ hook.Add("Think", "abilityKeyPressed", function()
 	
 	if controls.ability1 ~= nil then
 		if input.IsKeyDown(controls.ability1) then
+			print("abilityCastRequest 1")
 			net.Start("abilityCastRequest")
 				net.WriteUInt(1, 3)
 			net.SendToServer()
@@ -52,6 +53,7 @@ hook.Add("Think", "abilityKeyPressed", function()
 	
 	if controls.ability2 ~= nil then
 		if input.IsKeyDown(controls.ability2) then
+			print("abilityCastRequest 2")
 			net.Start("abilityCastRequest")
 				net.WriteUInt(2, 3)
 			net.SendToServer()
@@ -60,8 +62,8 @@ hook.Add("Think", "abilityKeyPressed", function()
 	
 	if controls.ultimate ~= nil then
 		if input.IsKeyDown(controls.ultimate) then
-			net.Start("ultimateCastRequest")
-			net.SendToServer()
+			print("ultimateRequest")
+			signal("ultimateCastRequest")
 		end
 	end
 end)
