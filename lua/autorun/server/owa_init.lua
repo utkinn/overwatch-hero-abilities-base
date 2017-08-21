@@ -56,6 +56,12 @@ function setPlayerHero(player, hero)
 	end
 end
 
+function abilityFinished(ply, id, result)
+	if result then
+		ply:SetNWInt("Cooldown; hero:" .. HEROES[ply:GetNWString("hero")].name .. " ability:" .. id, HEROES[ply:GetNWString("hero")].abilities[id].cooldown)
+	end
+end
+
 hook.Add("PlayerSpawn", "setHero", function(player)
 	local heroToSet = HEROES[player:GetInfo("owa_hero")]
 	if heroToSet ~= nil then
@@ -90,30 +96,38 @@ hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemain
 	end
 end)
 
-net.Receive("abilityCastRequest", function(_, player)
-	local heroName = player:GetNWString("hero")
-	if heroName == "none" then return end
-	print("here")
-	local hero = HEROES[heroName]
+net.Receive("abilityCastRequest", function(_, owa_ply)
+	--Anti-conflict workaround:
+	--For some reason "normal" method was conflicting with TFA VOX.
 	local ability = net.ReadUInt(3)
-	local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
-	
-	if player:GetNWInt(cooldownNWIntKey) == 0 then	--If an ability isn't cooling down
-		print("ALMOST THERE")
-		local success = hero.abilities[ability]:cast(player)	--Casting the ability and getting the success result
-	
-		if success then	--If a cast is successful
-			player:SetNWInt(cooldownNWIntKey, hero.cooldown)	--Putting the ability to cooldown
-		
-			timer.Create("Cooldown; player:" .. player:UserID() .. " hero:" .. hero.name .. " ability:" .. ability, 1, hero.cooldown - 1, function()	--Creating a cooldown countdown timer
-				player:SetNWInt(cooldownNWIntKey, player:GetNWInt(cooldownNWIntKey) - 1)
-			end)
-			
-			timer.Simple(hero.cooldown, function()	--Removing cooldown flag
-				player:SetNWInt(cooldownNWIntKey, 0)
-			end)
-		end
+	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. ability
+	if owa_ply:GetNWInt(cooldownNWIntKey) == 0 then
+		hook.Run("AbilityCasted", owa_ply, HEROES[owa_ply:GetNWString("hero")], ability)
 	end
+
+	--Normal method:
+	-- MsgN("net.Receive('abilityCastRequest'): ", owa_ply)
+	-- local heroName = owa_ply:GetNWString("hero")
+	-- if heroName == "none" then return end
+	-- local hero = HEROES[heroName]
+	-- local ability = net.ReadUInt(3)
+	-- local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
+	
+	-- if owa_ply:GetNWInt(cooldownNWIntKey) == 0 then	--If an ability isn't cooling down
+		-- local success = HEROES[owa_ply:GetNWString("hero")].abilities[ability]:cast(owa_ply)	--Casting the ability and getting the success result
+	
+		-- if success then	--If a cast is successful
+			-- owa_ply:SetNWInt(cooldownNWIntKey, hero.cooldown)	--Putting the ability to cooldown
+		
+			-- timer.Create("Cooldown; owa_ply:" .. owa_ply:UserID() .. " hero:" .. hero.name .. " ability:" .. ability, 1, hero.cooldown - 1, function()	--Creating a cooldown countdown timer
+				-- owa_ply:SetNWInt(cooldownNWIntKey, owa_ply:GetNWInt(cooldownNWIntKey) - 1)
+			-- end)
+			
+			-- timer.Simple(hero.cooldown, function()	--Removing cooldown flag
+				-- owa_ply:SetNWInt(cooldownNWIntKey, 0)
+			-- end)
+		-- end
+	-- end
 end)
 
 net.Receive("ultimateCastRequest", function(_, player)
