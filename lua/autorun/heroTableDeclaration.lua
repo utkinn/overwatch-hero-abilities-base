@@ -1,3 +1,6 @@
+--Enables/disables the debug output.
+DEBUG = true
+
 HEROES = {}
 
 function OverwatchHero(infoTable)

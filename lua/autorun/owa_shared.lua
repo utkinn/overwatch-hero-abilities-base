@@ -1,3 +1,5 @@
+--Custom library
+
 function removeSpaces(str)
 	return str:Trim():Replace(" ", "_")
 end
@@ -21,7 +23,32 @@ function isFriendly(player, ent)
 	return false
 end
 
---TODO: Add flag to client
+function dbgLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFalse)
+	if DEBUG then
+		if isstring(textOrPredicate) then
+			print("[OWA Debug"..debug.traceback(2).."] "..textOrPredicate)
+		elseif isbool(textOrPredicate) then
+			if isstring(textOrFunctionWhenTrue) then
+				print("[OWA Debug"..debug.traceback(2).."] "..textOrFunctionWhenTrue)
+			elseif isfunction(textOrFunctionWhenTrue) then
+				textOrFunctionWhenTrue()
+			else
+				print("[OWA Debug"..debug.traceback(2).."] bad argument #2 ("..type(textOrFunctionWhenTrue).." got, string or function expected)")
+			end
+			
+			if isstring(textOrFunctionWhenFalse) then
+				print("[OWA Debug"..debug.traceback(2).."] "..textOrFunctionWhenFalse)
+			elseif isfunction(textOrFunctionWhenFalse) then
+				textOrFunctionWhenFalse()
+			else
+				print("[OWA Debug"..debug.traceback(2).."] bad argument #3 ("..type(textOrFunctionWhenFalse).." got, string or function expected)")
+			end
+		else
+			print("[OWA Debug"..debug.traceback(2).."] bad argument #1 ("..type(textOrPredicate).." got, string or bool expected)")
+		end
+	end
+end
+
 conVarFlags = SERVER and {FCVAR_ARCHIVE, FCVAR_REPLICATED} or FCVAR_USERINFO
 
 adminConVars =
