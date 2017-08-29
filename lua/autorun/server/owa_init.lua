@@ -57,16 +57,19 @@ function setPlayerHero(player, hero)
 end
 
 function abilityFinished(ply, id, result)
-	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. id
+	local hero = HEROES[ply:GetNWString("hero")]
+	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[ply:GetNWString("hero")].name .. " ability:" .. id
 	if result then
 		ply:SetNWInt(cooldownNWIntKey, HEROES[ply:GetNWString("hero")].abilities[id].cooldown)
 		
-		timer.Create("Cooldown; owa_ply:" .. owa_ply:UserID() .. " hero:" .. hero.name .. " ability:" .. ability, 1, hero.cooldown - 1, function()	--Creating a cooldown countdown timer
-			owa_ply:SetNWInt(cooldownNWIntKey, owa_ply:GetNWInt(cooldownNWIntKey) - 1)
+		if DEBUG then PrintTable(hero) end
+		
+		timer.Create("Cooldown; ply:" .. ply:UserID() .. " hero:" .. hero.name .. " ability:" .. id, 1, hero.abilities[id].cooldown - 1, function()	--Creating a cooldown countdown timer
+			ply:SetNWInt(cooldownNWIntKey, ply:GetNWInt(cooldownNWIntKey) - 1)
 		end)
 		
-		timer.Simple(hero.cooldown, function()	--Removing cooldown flag
-			owa_ply:SetNWInt(cooldownNWIntKey, 0)
+		timer.Simple(hero.abilities[id].cooldown, function()	--Removing cooldown flag
+			ply:SetNWInt(cooldownNWIntKey, 0)
 		end)
 	end
 end
@@ -110,9 +113,11 @@ net.Receive("abilityCastRequest", function(_, owa_ply)
 	--For some reason "normal" method was conflicting with TFA VOX.
 	local ability = net.ReadUInt(3)
 	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. ability
-	if owa_ply:GetNWInt(cooldownNWIntKey) == 0 then
+	if owa_ply:GetNWInt(cooldownNWIntKey) == 0 or DEBUG then
 		--							player	hero								ability
 		hook.Run("AbilityCasted", owa_ply, HEROES[owa_ply:GetNWString("hero")], ability)
+	--else
+		--dbgLog("Ability "..ability.name.." on cooldown("..owa_ply:GetNWInt(cooldownNWIntKey).."), denying.")
 	end
 
 	--Normal method:

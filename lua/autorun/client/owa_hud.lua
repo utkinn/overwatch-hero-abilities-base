@@ -43,7 +43,7 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
 				drawColor = Color(255, 255, 255, TRANSPARENCY)
 			end
 			surface.SetDrawColor(drawColor)
-			surface.DrawTexturedRect(ScrW() * 0.65, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+			surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
 		end
 		
 		if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
