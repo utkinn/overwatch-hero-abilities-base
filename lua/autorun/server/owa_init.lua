@@ -57,8 +57,17 @@ function setPlayerHero(player, hero)
 end
 
 function abilityFinished(ply, id, result)
+	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. id
 	if result then
-		ply:SetNWInt("Cooldown; hero:" .. HEROES[ply:GetNWString("hero")].name .. " ability:" .. id, HEROES[ply:GetNWString("hero")].abilities[id].cooldown)
+		ply:SetNWInt(cooldownNWIntKey, HEROES[ply:GetNWString("hero")].abilities[id].cooldown)
+		
+		timer.Create("Cooldown; owa_ply:" .. owa_ply:UserID() .. " hero:" .. hero.name .. " ability:" .. ability, 1, hero.cooldown - 1, function()	--Creating a cooldown countdown timer
+			owa_ply:SetNWInt(cooldownNWIntKey, owa_ply:GetNWInt(cooldownNWIntKey) - 1)
+		end)
+		
+		timer.Simple(hero.cooldown, function()	--Removing cooldown flag
+			owa_ply:SetNWInt(cooldownNWIntKey, 0)
+		end)
 	end
 end
 
@@ -102,6 +111,7 @@ net.Receive("abilityCastRequest", function(_, owa_ply)
 	local ability = net.ReadUInt(3)
 	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. ability
 	if owa_ply:GetNWInt(cooldownNWIntKey) == 0 then
+		--							player	hero								ability
 		hook.Run("AbilityCasted", owa_ply, HEROES[owa_ply:GetNWString("hero")], ability)
 	end
 
