@@ -27,25 +27,25 @@ function dbgLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFalse
 	--local STACK_LEVEL = 3
 	if DEBUG then
 		if isstring(textOrPredicate) then
-			print("[OWA Debug"..debug.traceback().."] "..textOrPredicate)
+			print("[OWA Debug "..debug.traceback().."] "..textOrPredicate)
 		elseif isbool(textOrPredicate) then
 			if isstring(textOrFunctionWhenTrue) then
-				print("[OWA Debug"..debug.traceback().."] "..textOrFunctionWhenTrue)
+				print("[OWA Debug "..debug.traceback().."] "..textOrFunctionWhenTrue)
 			elseif isfunction(textOrFunctionWhenTrue) then
 				textOrFunctionWhenTrue()
 			else
-				print("[OWA Debug"..debug.traceback().."] bad argument #2 ("..type(textOrFunctionWhenTrue).." got, string or function expected)")
+				print("[OWA Debug "..debug.traceback().."] bad argument #2 ("..type(textOrFunctionWhenTrue).." got, string or function expected)")
 			end
 			
 			if isstring(textOrFunctionWhenFalse) then
-				print("[OWA Debug"..debug.traceback().."] "..textOrFunctionWhenFalse)
+				print("[OWA Debug "..debug.traceback().."] "..textOrFunctionWhenFalse)
 			elseif isfunction(textOrFunctionWhenFalse) then
 				textOrFunctionWhenFalse()
 			else
-				print("[OWA Debug"..debug.traceback().."] bad argument #3 ("..type(textOrFunctionWhenFalse).." got, string or function expected)")
+				print("[OWA Debug "..debug.traceback().."] bad argument #3 ("..type(textOrFunctionWhenFalse).." got, string or function expected)")
 			end
 		else
-			print("[OWA Debug"..debug.traceback().."] bad argument #1 ("..type(textOrPredicate).." got, string or bool expected)")
+			print("[OWA Debug "..debug.traceback().."] bad argument #1 ("..type(textOrPredicate).." got, string or bool expected)")
 		end
 	end
 end

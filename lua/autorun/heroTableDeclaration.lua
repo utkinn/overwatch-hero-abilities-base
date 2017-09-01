@@ -4,5 +4,11 @@ DEBUG = true
 HEROES = {}
 
 function OverwatchHero(infoTable)
-	HEROES[infoTable.name or "Mister X"] = infoTable
+	if HEROES ~= nil then
+		HEROES[infoTable.name or "Mister X"] = infoTable
+	else
+		hook.Add("PreGamemodeLoaded", "addHero_genji", function()
+			HEROES[infoTable.name or "Mister X"] = infoTable
+		end)
+	end
 end

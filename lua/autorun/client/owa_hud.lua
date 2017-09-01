@@ -27,6 +27,7 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
 			local drawColor
 			if LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[1].name) ~= 0 then
 				drawColor = Color(255, 50, 50, TRANSPARENCY)
+				draw.DrawText(LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[1].name), "BigNoodleTooOblique", ScrW() * 0.64, ScrH() * 0.93)
 			else
 				drawColor = Color(255, 255, 255, TRANSPARENCY)
 			end
@@ -39,6 +40,7 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
 			local drawColor
 			if LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[2].name) ~= 0 then
 				drawColor = Color(255, 50, 50, TRANSPARENCY)
+				draw.DrawText(LocalPlayer():GetNWInt("Cooldown; hero:" .. hero.name .. " ability:" .. hero.abilities[2].name), "BigNoodleTooOblique", ScrW() * 0.68, ScrH() * 0.94)
 			else
 				drawColor = Color(255, 255, 255, TRANSPARENCY)
 			end
