@@ -21,6 +21,7 @@ util.AddNetworkString("adminConVarChanged")
 	-- ultimateMaterial = ultimateMaterial or Material("OWAMaterialError.jpeg")
 -- }
 
+--(Re)sets player hero parameters.
 function setPlayerHero(player, hero)
 	player:SetNWString("hero", hero.name)
 	if hero.name == "none" then return end
@@ -48,6 +49,7 @@ function setPlayerHero(player, hero)
 		end
 	end
 	
+	--Notifying teammates about hero change
 	for _, broadcastTarget in pairs(team.GetPlayers(player:Team())) do
 		net.Start("allyChangedHero")
 			net.WriteString(player:Nick())
@@ -56,22 +58,23 @@ function setPlayerHero(player, hero)
 	end
 end
 
-function abilityFinished(ply, id, result)
+function abilitySucceeded(ply, id)
 	local hero = HEROES[ply:GetNWString("hero")]
-	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[ply:GetNWString("hero")].name .. " ability:" .. id
-	if result then
-		ply:SetNWInt(cooldownNWIntKey, HEROES[ply:GetNWString("hero")].abilities[id].cooldown)
-		
-		if DEBUG then PrintTable(hero) end
-		
-		timer.Create("Cooldown; ply:" .. ply:UserID() .. " hero:" .. hero.name .. " ability:" .. id, 1, hero.abilities[id].cooldown - 1, function()	--Creating a cooldown countdown timer
-			ply:SetNWInt(cooldownNWIntKey, ply:GetNWInt(cooldownNWIntKey) - 1)
-		end)
-		
-		timer.Simple(hero.abilities[id].cooldown, function()	--Removing cooldown flag
-			ply:SetNWInt(cooldownNWIntKey, 0)
-		end)
-	end
+	local cooldownNWIntKey = "cooldown "..id
+	local cooldownTimerKey = "cooldown "..id.." "..ply:UserID()
+	local cooldown = hero.abilities[id].cooldown
+	
+	ply:SetNWInt(cooldownNWIntKey, cooldown)
+	
+	if DEBUG then PrintTable(hero) end
+	
+	timer.Create(cooldownTimerKey, 1, cooldown - 1, function()	--Creating a cooldown countdown timer
+		ply:SetNWInt(cooldownNWIntKey, ply:GetNWInt(cooldownNWIntKey) - 1)
+	end)
+	
+	timer.Simple(cooldown, function()	--Removing cooldown flag
+		ply:SetNWInt(cooldownNWIntKey, 0)
+	end)
 end
 
 hook.Add("PlayerSpawn", "setHero", function(player)
@@ -111,38 +114,15 @@ end)
 net.Receive("abilityCastRequest", function(_, owa_ply)
 	--Anti-conflict workaround:
 	--For some reason "normal" method was conflicting with TFA VOX.
+	if owa_ply:GetNWString("hero") == "none" then return end
 	local ability = net.ReadUInt(3)
-	local cooldownNWIntKey = "Cooldown; hero:" .. HEROES[owa_ply:GetNWString("hero")].name .. " ability:" .. ability
-	if owa_ply:GetNWInt(cooldownNWIntKey) == 0 or DEBUG then
+	local cooldownNWIntKey = "cooldown "..ability
+	if owa_ply:GetNWInt(cooldownNWIntKey) <= 0 or DEBUG then
 		--							player	hero								ability
 		hook.Run("AbilityCasted", owa_ply, HEROES[owa_ply:GetNWString("hero")], ability)
-	--else
-		--dbgLog("Ability "..ability.name.." on cooldown("..owa_ply:GetNWInt(cooldownNWIntKey).."), denying.")
+	else
+		dbgLog("Ability "..ability.name.." on cooldown("..owa_ply:GetNWInt(cooldownNWIntKey).."), denying.")
 	end
-
-	--Normal method:
-	-- MsgN("net.Receive('abilityCastRequest'): ", owa_ply)
-	-- local heroName = owa_ply:GetNWString("hero")
-	-- if heroName == "none" then return end
-	-- local hero = HEROES[heroName]
-	-- local ability = net.ReadUInt(3)
-	-- local cooldownNWIntKey = "Cooldown; hero:" .. hero.name .. " ability:" .. ability
-	
-	-- if owa_ply:GetNWInt(cooldownNWIntKey) == 0 then	--If an ability isn't cooling down
-		-- local success = HEROES[owa_ply:GetNWString("hero")].abilities[ability]:cast(owa_ply)	--Casting the ability and getting the success result
-	
-		-- if success then	--If a cast is successful
-			-- owa_ply:SetNWInt(cooldownNWIntKey, hero.cooldown)	--Putting the ability to cooldown
-		
-			-- timer.Create("Cooldown; owa_ply:" .. owa_ply:UserID() .. " hero:" .. hero.name .. " ability:" .. ability, 1, hero.cooldown - 1, function()	--Creating a cooldown countdown timer
-				-- owa_ply:SetNWInt(cooldownNWIntKey, owa_ply:GetNWInt(cooldownNWIntKey) - 1)
-			-- end)
-			
-			-- timer.Simple(hero.cooldown, function()	--Removing cooldown flag
-				-- owa_ply:SetNWInt(cooldownNWIntKey, 0)
-			-- end)
-		-- end
-	-- end
 end)
 
 net.Receive("ultimateCastRequest", function(_, player)
@@ -158,7 +138,3 @@ net.Receive("ultimateCastRequest", function(_, player)
 		end
 	end
 end)
-
--- net.Receive("kill", function(_, player)
-	-- player:Kill()
--- end

@@ -24,9 +24,9 @@ function addOWAHeroSettingsPage(heroName)
 	
 	spawnmenu.AddToolMenuOption("Utilities", "#owa.ui.heroSettings.category", "OWAHero:" .. (heroName or "Unknown"), heroName or "Unknown", nil, nil, function(form)
 		if LocalPlayer():IsAdmin() then
-			form:CheckBox("Admins only", "owa_hero." .. removeSpaces(heroName) .. ".adminsOnly")
+			form:CheckBox("#owa.ui.settings.hero.adminOnly", "owa_hero." .. removeSpaces(heroName) .. ".adminsOnly")
 			for _, ability in pairs(hero.abilities) do
-				form:Help(ability.name .. ": cooldown")
+				form:Help(ability.name .. language.GetPhrase("owa.ui.settings.hero.cooldown"))
 				form:NumberWang("", "owa_hero_customization." .. removeSpaces(heroName) .. ".ability." .. removeSpaces(ability.name) .. ".cooldown", 0, 100)
 			end
 			if hero.customSettings ~= nil then
@@ -38,7 +38,7 @@ function addOWAHeroSettingsPage(heroName)
 				end
 			end
 			if hero.ultimate then
-				form:Help(hero.ultimate.name .. ": charge multiplier")
+				form:Help(hero.ultimate.name .. language.GetPhrase("owa.ui.settings.hero.ultimateChargeMultiplier"))
 				form:NumberWang("", "owa_hero_customization." .. removeSpaces(heroName) .. ".ultimate.mult", 0, 100)
 			end
 		else
@@ -74,6 +74,16 @@ hook.Add("PopulateToolMenu", "populateAbilityBaseMenu", function()
 		for _, hero in pairs(HEROES) do
 			heroComboBox:AddChoice(hero.name)
 		end
+		-- local hero = HEROES[heroComboBox:GetSelected()]
+		-- if hero ~= nil then
+			-- form:Help(hero.description)
+			-- for id, ability in pairs(hero.abilities) do
+				-- form:ControlHelp(language.GetPhrase("owa.ui.settings.controls.castAbility").." #"..id..": "..ability.name)
+				-- form:Help(ability.description)
+			-- end
+			-- form:ControlHelp(language.GetPhrase("owa.ui.settings.controls.castUltimate")..": "..hero.ultimate.name)
+			-- form:Help(hero.ultimate.description)
+		-- end
 		form:CheckBox("#owa.ui.settings.auto_suicide", "owa_suicide_on_hero_change")
 	end)
 	
