@@ -1,17 +1,17 @@
 local CONTROLS_FILE = "OWAControls.txt"
 
 if not file.Exists(CONTROLS_FILE, "DATA") then
-	controls =
+	OWAControls =
 	{
 		ability1 = nil,
 		ability2 = nil,
 		ultimate = nil
 	}
 else
-	controls = util.JSONToTable(file.Read(CONTROLS_FILE))
+	OWAControls = util.JSONToTable(file.Read(CONTROLS_FILE))
 end
 
-function binder(form, text, onChange, initValue)
+function owa_binder(form, text, onChange, initValue)
 	local label = vgui.Create("DLabel")
 	label:SetText(text)
 
@@ -28,22 +28,22 @@ function binder(form, text, onChange, initValue)
 	return binder
 end
 
-function updateKeyBinding(control, num)
+function owa_updateKeyBinding(control, num)
 	local fileContents = file.Read(CONTROLS_FILE)
 	if fileContents ~= "" and fileContents ~= nil then
-		controls = util.JSONToTable(fileContents)
+		OWAControls = util.JSONToTable(fileContents)
 	else
-		controls = {}
+		OWAControls = {}
 	end
-	controls[control] = num
-	file.Write(CONTROLS_FILE, util.TableToJSON(controls))
+	OWAControls[control] = num
+	file.Write(CONTROLS_FILE, util.TableToJSON(OWAControls))
 end
 
-hook.Add("Think", "abilityKeyPressed", function()
+hook.Add("Think", "owa_abilityKeyPressed", function()
 	if LocalPlayer():IsTyping() then return end
 	
-	if controls.ability1 ~= nil then
-		if input.IsKeyDown(controls.ability1) then
+	if OWAControls.ability1 ~= nil then
+		if input.IsKeyDown(OWAControls.ability1) then
 			dbgLog("abilityCastRequest 1")
 			net.Start("abilityCastRequest")
 				net.WriteUInt(1, 3)
@@ -51,8 +51,8 @@ hook.Add("Think", "abilityKeyPressed", function()
 		end
 	end
 	
-	if controls.ability2 ~= nil then
-		if input.IsKeyDown(controls.ability2) then
+	if OWAControls.ability2 ~= nil then
+		if input.IsKeyDown(OWAControls.ability2) then
 			dbgLog("abilityCastRequest 2")
 			net.Start("abilityCastRequest")
 				net.WriteUInt(2, 3)
@@ -60,8 +60,8 @@ hook.Add("Think", "abilityKeyPressed", function()
 		end
 	end
 	
-	if controls.ultimate ~= nil then
-		if input.IsKeyDown(controls.ultimate) then
+	if OWAControls.ultimate ~= nil then
+		if input.IsKeyDown(OWAControls.ultimate) then
 			dbgLog("ultimateRequest")
 			signal("ultimateCastRequest")
 		end

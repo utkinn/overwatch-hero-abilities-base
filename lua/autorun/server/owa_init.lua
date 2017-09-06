@@ -87,6 +87,7 @@ hook.Add("PlayerSpawn", "setHero", function(player)
 end)
 
 hook.Add("PlayerHurt", "decreaseShield", function(victim, attacker, healthRemaining, damageTaken)
+	if victim:GetNWString("hero") == "none" then return end
 	if HEROES[victim:GetNWString("hero")].shield then
 		if victim:GetNWInt("shield") > 0 then	--Checking if victim has a shield charge
 			victim:SetHealth(victim:Health() + damageTaken)	--Restoring damage
