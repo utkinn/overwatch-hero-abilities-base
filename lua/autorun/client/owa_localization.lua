@@ -38,7 +38,9 @@ phrases =
 	["consoleHelp.heroPlayerProperties.speed"] = {"Does selected hero affects players' movement speed?", "Влияет ли выбранный герой на скорость?"},
 	["consoleHelp.heroPlayerProperties.weapons"] = {"Does selected hero affects players' speed?", "Влияет ли выбранный герой на оружия?"}--]]
 	["ui.settings.controls.castAbility"] = {"Ability ", "Способность "},
-	["ui.settings.controls.castUltimate"] = {"Ultimate", "Суперспособность"}
+	["ui.settings.controls.castUltimate"] = {"Ultimate", "Суперспособность"},
+	["ui.settings.controls.showHeroSelectScreen"] = {"Hero select", "Выбор героя"},
+	["ui.settings.controls.selectHero"] = {"Select a hero", "Выберите героя"}
 }
 
 local userLanguage = GetConVar("owa_ui_language"):GetString()

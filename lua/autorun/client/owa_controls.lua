@@ -5,7 +5,8 @@ if not file.Exists(CONTROLS_FILE, "DATA") then
 	{
 		ability1 = nil,
 		ability2 = nil,
-		ultimate = nil
+		ultimate = nil,
+		showHeroSelectScreen = nil
 	}
 else
 	OWAControls = util.JSONToTable(file.Read(CONTROLS_FILE))
@@ -30,10 +31,9 @@ end
 
 function owa_updateKeyBinding(control, num)
 	local fileContents = file.Read(CONTROLS_FILE)
+	OWAControls = {}
 	if fileContents ~= "" and fileContents ~= nil then
 		OWAControls = util.JSONToTable(fileContents)
-	else
-		OWAControls = {}
 	end
 	OWAControls[control] = num
 	file.Write(CONTROLS_FILE, util.TableToJSON(OWAControls))
@@ -64,6 +64,26 @@ hook.Add("Think", "owa_abilityKeyPressed", function()
 		if input.IsKeyDown(OWAControls.ultimate) then
 			dbgLog("ultimateRequest")
 			signal("ultimateCastRequest")
+		end
+	end
+	
+	if OWAControls.showHeroSelectScreen ~= nil then
+		if input.WasKeyReleased(OWAControls.showHeroSelectScreen) then
+			dbgLog("showHeroSelectScreen")
+			owa_ui_toggleHeroSelectScreen()
+		end
+	end
+	
+	
+end)
+
+hook.Add("Move", "owa_abilityKeyPressed_move", function()
+	if LocalPlayer():IsTyping() then return end
+	
+	if OWAControls.showHeroSelectScreen ~= nil then
+		if input.WasKeyTyped(OWAControls.showHeroSelectScreen) then
+			dbgLog("showHeroSelectScreen")
+			owa_ui_toggleHeroSelectScreen()
 		end
 	end
 end)
