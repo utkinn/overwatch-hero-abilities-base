@@ -1,5 +1,4 @@
-phrases =
-{
+phrases = {
     ["consoleHelp.owa_ui_hero.invalid"] = {"Invalid hero!", "Неверный герой!"},
     ["ui.settings.category"] = {"OWA Settings: General", "Настройки OWA: Главные"},
     ["consoleHelp.owa_hud_halos_ally"] = {"Whether to draw ally halos.", "Подсвечивать союзников."},

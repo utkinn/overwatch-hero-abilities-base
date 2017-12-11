@@ -20,7 +20,7 @@ end)
     
 TRANSPARENCY = 150
 
-local function getCooldownNWIntKey(id)
+local function GetCooldownNWIntKey(id)
     return "cooldown "..id
 end
 
@@ -31,12 +31,13 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
         local hero = HEROES[LocalPlayer():GetNWString("hero")]
         local materials = hero.materials
         
+        --TODO
         if materials.abilities[1] and not isnumber(materials.abilities[1]) and hero.abilities[1] then
             surface.SetMaterial(materials.abilities[1])
             local drawColor
-            if LocalPlayer():GetNWInt(getCooldownNWIntKey(1)) ~= 0 then
+            if LocalPlayer():GetNWInt(GetCooldownNWIntKey(1)) ~= 0 then
                 drawColor = Color(255, 50, 50, TRANSPARENCY)
-                draw.DrawText(LocalPlayer():GetNWInt(getCooldownNWIntKey(1)), "OWA", ScrW() * 0.64, ScrH() * 0.92)
+                draw.DrawText(LocalPlayer():GetNWInt(GetCooldownNWIntKey(1)), "OWA", ScrW() * 0.64, ScrH() * 0.92)
             else
                 drawColor = Color(255, 255, 255, TRANSPARENCY)
             end
@@ -44,12 +45,13 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
             surface.DrawTexturedRect(ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
         end
         
+        --TODO
         if materials.abilities[2] and not isnumber(materials.abilities[2]) and hero.abilities[2] then
             surface.SetMaterial(materials.abilities[2])
             local drawColor
-            if LocalPlayer():GetNWInt(getCooldownNWIntKey(2)) ~= 0 then
+            if LocalPlayer():GetNWInt(GetCooldownNWIntKey(2)) ~= 0 then
                 drawColor = Color(255, 50, 50, TRANSPARENCY)
-                draw.DrawText(LocalPlayer():GetNWInt(getCooldownNWIntKey(2)), "OWA", ScrW() * 0.67, ScrH() * 0.92)
+                draw.DrawText(LocalPlayer():GetNWInt(GetCooldownNWIntKey(2)), "OWA", ScrW() * 0.67, ScrH() * 0.92)
             else
                 drawColor = Color(255, 255, 255, TRANSPARENCY)
             end
@@ -66,5 +68,5 @@ hook.Add("HUDPaint", "DrawOWAAbilitiesHUD", function()
 end)
 
 hook.Add("HUDPaint", "DrawShield", function()
-    
+    --TODO
 end)

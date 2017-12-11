@@ -1,13 +1,13 @@
-HALO_ALLY_COLOR = Color(0, 145, 255)
-HALO_ENEMY_COLOR = Color(255, 0, 0)
+local HALO_ALLY_COLOR = Color(0, 145, 255)
+local HALO_ENEMY_COLOR = Color(255, 0, 0)
 
-hook.Add("PreDrawHalos", "allyHalos", function()
+hook.Add("PreDrawHalos", "AllyHalos", function()
     if GetConVar("owa_hud_halos_ally"):GetBool() then
         halo.Add(team.GetPlayers(LocalPlayer():Team()), HALO_ALLY_COLOR, 5, 5, 2)
     end
 end)
 
-hook.Add("PreDrawHalos", "enemyHalos", function()
+hook.Add("PreDrawHalos", "EnemyHalos", function()
     if GetConVar("owa_hud_halos_enemy"):GetBool() then
         local enemies = {}
         local teams = team.GetAllTeams()
