@@ -1,8 +1,8 @@
-function RemoveSpaces(str)
+function removeSpaces(str)
     return str:Trim():Replace(" ", "_")
 end
 
-function Signal(signalName, player)
+function signal(signalName, player)
     net.Start(signalName)
     if SERVER then
         net.Send(player)
@@ -11,7 +11,7 @@ function Signal(signalName, player)
     end
 end
 
-function IsFriendly(player, ent)
+function isFriendly(player, ent)
     if ent:IsPlayer() then
         if player:Team() == ent:Team() then return true end
     elseif hitEnt:IsNPC() then
@@ -21,8 +21,8 @@ function IsFriendly(player, ent)
     return false
 end
 
-function DebugLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFalse)
-    if DEBUG then
+function debugLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFalse)
+    if OWA_DEBUG then
         if isstring(textOrPredicate) then
             print("[OWA Debug "..debug.traceback().."] "..textOrPredicate)
         elseif isbool(textOrPredicate) then
@@ -33,7 +33,7 @@ function DebugLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFal
             else
                 print("[OWA Debug "..debug.traceback().."] bad argument #2 ("..type(textOrFunctionWhenTrue).." got, string or function expected)")
             end
-            
+
             if isstring(textOrFunctionWhenFalse) then
                 print("[OWA Debug "..debug.traceback().."] "..textOrFunctionWhenFalse)
             elseif isfunction(textOrFunctionWhenFalse) then
@@ -47,15 +47,15 @@ function DebugLog(textOrPredicate, textOrFunctionWhenTrue, textOrFunctionWhenFal
     end
 end
 
-function FileIsEmpty(filePath)
+function fileIsEmpty(filePath)
     local fileContents = file.Read(filePath)
     return fileContents == "" or fileContents == nil
 end
 
-function CoerceAtLeast(minValue, actualValue)
-    if actualValue < minValue then 
-        return minValue 
-    else 
-        return actualValue 
+function coerceAtLeast(minValue, actualValue)
+    if actualValue < minValue then
+        return minValue
+    else
+        return actualValue
     end
 end

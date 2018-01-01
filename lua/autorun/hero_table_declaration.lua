@@ -1,6 +1,3 @@
---Enables/disables the debug output.
-DEBUG = true
-
 HEROES = {}
 
 function OverwatchHero(infoTable)
@@ -12,3 +9,5 @@ function OverwatchHero(infoTable)
         end)
     end
 end
+
+hook.Run('OWAInitialized')

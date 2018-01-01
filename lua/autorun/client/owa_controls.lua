@@ -1,73 +1,78 @@
-include("customlib.lua")
+include('utils.lua')
+include('client/constants.lua')
 
-local CONTROLS_FILE = "OWAControls.txt"
-
-if not file.Exists(CONTROLS_FILE, "DATA") then
+local function createBlankControlsTable()
     OWAControls = {
         ability1 = nil,
         ability2 = nil,
         ultimate = nil,
         showHeroSelectScreen = nil
     }
+end
+
+local function loadControlsFromFile()
+    OWAControls = util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
+end
+
+local function handleControlKeyPress(control, callback)
+    local keyCode = OWAControls[control]
+    if keyCode == nil or not input.IsKeyDown(keyCode) then return end
+    callback()
+end
+
+if not file.Exists(OWA_CONTROLS_FILE, 'DATA') then
+    createBlankControlsTable()
 else
-    OWAControls = util.JSONToTable(file.Read(CONTROLS_FILE))
+    loadControlsFromFile()
 end
 
-function OWAUpdateKeyBinding(control, num)
-    OWAControls = {}
-    
-    if FileIsEmpty(CONTROLS_FILE) then
-        local fileContents = file.Read(CONTROLS_FILE)
-        OWAControls = util.JSONToTable(fileContents)
-    end
-    
-    OWAControls[control] = num
-    file.Write(CONTROLS_FILE, util.TableToJSON(OWAControls))
-end
-
-hook.Add("Think", "OWAAbilityKeyPressed", function()
+hook.Add('Think', 'OWA Ability key pressed', function()
     if LocalPlayer():IsTyping() then return end
-    
-    if OWAControls.ability1 ~= nil then
-        if input.IsKeyDown(OWAControls.ability1) then
-            DebugLog("abilityCastRequest 1")
-            net.Start("abilityCastRequest")
-                net.WriteUInt(1, 3)
-            net.SendToServer()
-        end
-    end
-    
-    if OWAControls.ability2 ~= nil then
-        if input.IsKeyDown(OWAControls.ability2) then
-            DebugLog("abilityCastRequest 2")
-            net.Start("abilityCastRequest")
-                net.WriteUInt(2, 3)
-            net.SendToServer()
-        end
-    end
-    
-    if OWAControls.ultimate ~= nil then
-        if input.IsKeyDown(OWAControls.ultimate) then
-            DebugLog("ultimateRequest")
-            Signal("ultimateCastRequest")
-        end
-    end
-    
-    if OWAControls.showHeroSelectScreen ~= nil then
-        if input.WasKeyReleased(OWAControls.showHeroSelectScreen) then
-            DebugLog("showHeroSelectScreen")
-            AddOWAHeroSettingsPage()
-        end
-    end
+
+    handleControlKeyPress('ability1', function()
+        debugLog('abilityCastRequest 1')
+        net.Start('abilityCastRequest')
+            net.WriteUInt(1, 3)
+        net.SendToServer()
+    end)
+
+    handleControlKeyPress('ability2', function()
+        debugLog('abilityCastRequest 2')
+        net.Start('abilityCastRequest')
+            net.WriteUInt(2, 3)
+        net.SendToServer()
+    end)
+
+    handleControlKeyPress('ultimate', function()
+        debugLog('ultimateRequest')
+        signal('ultimateCastRequest')
+    end)
+
+    -- TODO: Choose working one
+
+    -- 1
+    handleControlKeyPress('showHeroSelectScreen', function()
+        debugLog('showHeroSelectScreen')
+        OWA_toggleHeroSelectScreen()
+    end)
+
+    -- 2
+    -- if OWAControls. ~= nil then
+    --     if input.WasKeyReleased(OWAControls.showHeroSelectScreen) then
+    --         debugLog('showHeroSelectScreen')
+    --         addOWAHeroSettingsPage()
+    --     end
+    -- end
 end)
 
-hook.Add("Move", "OWAAbilityKeyPressed_move", function()
-    if LocalPlayer():IsTyping() then return end
-    
-    if OWAControls.showHeroSelectScreen ~= nil then
-        if input.WasKeyTyped(OWAControls.showHeroSelectScreen) then
-            DebugLog("showHeroSelectScreen")
-            AddOWAHeroSettingsPage()
-        end
-    end
-end)
+-- 3
+-- hook.Add('Move', 'OWAAbilityKeyPressed_move', function()
+--     if LocalPlayer():IsTyping() then return end
+--
+--     if OWAControls.showHeroSelectScreen ~= nil then
+--         if input.WasKeyTyped(OWAControls.showHeroSelectScreen) then
+--             debugLog('showHeroSelectScreen')
+--             addOWAHeroSettingsPage()
+--         end
+--     end
+-- end)
