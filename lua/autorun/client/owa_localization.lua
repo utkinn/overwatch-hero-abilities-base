@@ -1,3 +1,5 @@
+OWA_supportedLanguages = { 'en', 'ru' }
+
 phrases = {
     ['consoleHelp.owa_ui_hero.invalid'] = {
         'Invalid hero!',
@@ -176,11 +178,9 @@ phrases = {
 
 local userLanguage = GetConVar('owa_ui_language'):GetString()
 for code, phrasesTable in pairs(phrases) do
-    for _, vPhrase in pairs(phrasesTable) do
-        if userLanguage == 'en' then
-            language.Add('owa.' .. code, phrasesTable[1])
-        elseif userLanguage == 'ru' then
-            language.Add('owa.' .. code, phrasesTable[2] and phrasesTable[2] or phrasesTable[1])
-        end
+    if userLanguage == 'en' then
+        language.Add('owa.' .. code, phrasesTable[1])
+    elseif userLanguage == 'ru' then
+        language.Add('owa.' .. code, phrasesTable[2] and phrasesTable[2] or phrasesTable[1])
     end
 end

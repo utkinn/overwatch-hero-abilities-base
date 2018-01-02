@@ -18,7 +18,7 @@ end)
         -- ultimateMaterial = Material(materials.ultimate)
     -- end
 
-TRANSPARENCY = 150
+local TRANSPARENCY = 150
 
 local function getCooldownNWIntKey(id)
     return 'cooldown ' .. id
@@ -59,22 +59,22 @@ local function drawAbilityIcon(id, hero, x, y, width, heigth, cooldownTextX, coo
     surface.DrawTexturedRect(x, y, width, heigth)
 end
 
-hook.Add('HUDPaint', 'DrawOWAAbilitiesHUD', function()
-    if LocalPlayer():GetNWString('hero') ~= 'none' and heroName ~= '' then
-        draw.RoundedBox(8, ScrW() * 0.62, ScrH() * 0.9, ScrW() * 0.2,  ScrH() * 0.09, Color(0, 0, 0, TRANSPARENCY))
+hook.Add('HUDPaint', 'Draw OWA abilities HUD', function()
+    if LocalPlayer():GetNWString('hero') == 'none' or heroName == '' then return end
 
-        local hero = HEROES[LocalPlayer():GetNWString('hero')]
-        local materials = hero.materials
+    draw.RoundedBox(8, ScrW() * 0.62, ScrH() * 0.9, ScrW() * 0.2,  ScrH() * 0.09, Color(0, 0, 0, TRANSPARENCY))
 
-        drawAbilityIcon(1, hero, ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.64, ScrH() * 0.92)
-        drawAbilityIcon(2, hero, ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.67, ScrH() * 0.92)
+    local hero = HEROES[LocalPlayer():GetNWString('hero')]
+    local materials = hero.materials
 
-        -- TODO: Refactor
-        if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
-            surface.SetMaterial(materials.ultimate)
-            surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
-            surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
-        end
+    drawAbilityIcon(1, hero, ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.64, ScrH() * 0.92)
+    drawAbilityIcon(2, hero, ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.67, ScrH() * 0.92)
+
+    -- TODO: Refactor
+    if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
+        surface.SetMaterial(materials.ultimate)
+        surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
+        surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
     end
 end)
 

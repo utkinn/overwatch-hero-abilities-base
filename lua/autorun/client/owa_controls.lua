@@ -2,7 +2,7 @@ include('utils.lua')
 include('client/constants.lua')
 
 local function createBlankControlsTable()
-    OWAControls = {
+    OWA_controls = {
         ability1 = nil,
         ability2 = nil,
         ultimate = nil,
@@ -11,19 +11,19 @@ local function createBlankControlsTable()
 end
 
 local function loadControlsFromFile()
-    OWAControls = util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
+    OWA_controls = util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
 end
 
 local function handleControlKeyPress(control, callback)
-    local keyCode = OWAControls[control]
+    local keyCode = OWA_controls[control]
     if keyCode == nil or not input.IsKeyDown(keyCode) then return end
     callback()
 end
 
-if not file.Exists(OWA_CONTROLS_FILE, 'DATA') then
-    createBlankControlsTable()
-else
+if file.Exists(OWA_CONTROLS_FILE, 'DATA') then
     loadControlsFromFile()
+else
+    createBlankControlsTable()
 end
 
 hook.Add('Think', 'OWA Ability key pressed', function()
@@ -57,8 +57,8 @@ hook.Add('Think', 'OWA Ability key pressed', function()
     end)
 
     -- 2
-    -- if OWAControls. ~= nil then
-    --     if input.WasKeyReleased(OWAControls.showHeroSelectScreen) then
+    -- if OWA_controls.ultimate ~= nil then
+    --     if input.WasKeyReleased(OWA_controls.showHeroSelectScreen) then
     --         debugLog('showHeroSelectScreen')
     --         addOWAHeroSettingsPage()
     --     end
@@ -69,8 +69,8 @@ end)
 -- hook.Add('Move', 'OWAAbilityKeyPressed_move', function()
 --     if LocalPlayer():IsTyping() then return end
 --
---     if OWAControls.showHeroSelectScreen ~= nil then
---         if input.WasKeyTyped(OWAControls.showHeroSelectScreen) then
+--     if OWA_controls.showHeroSelectScreen ~= nil then
+--         if input.WasKeyTyped(OWA_controls.showHeroSelectScreen) then
 --             debugLog('showHeroSelectScreen')
 --             addOWAHeroSettingsPage()
 --         end

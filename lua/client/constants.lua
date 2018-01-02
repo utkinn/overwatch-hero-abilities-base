@@ -1,1 +1,1 @@
-OWA_CONTROLS_FILE = 'OWAControls.txt'
+OWA_CONTROLS_FILE = 'owa_controls.txt'

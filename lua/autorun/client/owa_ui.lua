@@ -4,22 +4,22 @@ include('client/constants.lua')
 local showHeroSelectScreen = false
 
 local function createOverwatchFont(size)
-    surface.CreateFont('overwatch'..size, {
+    surface.CreateFont('overwatch' .. size, {
         font = 'BigNoodleTooOblique',
         size = size
     })
 end
 
 local function updateKeyBinding(control, num)
-    OWAControls = {}
+    OWA_controls = {}
 
     if fileIsEmpty(OWA_CONTROLS_FILE) then
-        local fileContents = file.Read(OWA_CONTROLS_FILE)
-        OWAControls = util.JSONToTable(fileContents)
+        local fileContents = file.Read(OWA_CONTROLS_FILE, 'DATA')
+        OWA_controls = util.JSONToTable(fileContents)
     end
 
-    OWAControls[control] = num
-    file.Write(OWA_CONTROLS_FILE, util.TableToJSON(OWAControls))
+    OWA_controls[control] = num
+    file.Write(OWA_CONTROLS_FILE, util.TableToJSON(OWA_controls))
 end
 
 createOverwatchFont(60)
@@ -48,29 +48,40 @@ end
 local function addOWAHeroSettingsPage(heroName)
     local hero = HEROES[heroName]
 
-    spawnmenu.AddToolMenuOption('Utilities', '#owa.ui.heroSettings.category', 'OWAHero:' .. (heroName or 'Unknown'), heroName or 'Unknown', nil, nil, function(form)
-        if not LocalPlayer():IsAdmin() then
-            form:Help('#owa.ui.settings.admin.denied')
-            return
-        end
-        form:CheckBox('#owa.ui.settings.hero.adminOnly', 'owa_hero.' .. RemoveSpaces(heroName) .. '.adminsOnly')
-        for _, ability in pairs(hero.abilities) do
-            form:Help(ability.name .. language.GetPhrase('owa.ui.settings.hero.cooldown'))
-            form:NumberWang('', 'owa_hero_customization.' .. RemoveSpaces(heroName) .. '.ability.' .. RemoveSpaces(ability.name) .. '.cooldown', 0, 100)
-        end
-        if hero.customSettings ~= nil then
-            for _, customSetting in pairs(hero.customSettings) do
-                form:NumSlider(customSetting.name, 'owa_hero_customization.' .. RemoveSpaces(heroName) .. '.' .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
-                if customSetting.help then
-                    form:Help(customSetting.help)
+    spawnmenu.AddToolMenuOption(
+        'Utilities',
+        '#owa.ui.heroSettings.category',
+        'OWAHero:' .. (heroName or 'Unknown'),
+        heroName or 'Unknown',
+        nil, nil,
+        function(form)
+            if not LocalPlayer():IsAdmin() then
+                form:Help('#owa.ui.settings.admin.denied')
+                return
+            end
+
+            form:CheckBox('#owa.ui.settings.hero.adminOnly', 'owa_hero.' .. removeSpaces(heroName) .. '.adminsOnly')
+
+            for _, ability in pairs(hero.abilities) do
+                form:Help(ability.name .. language.GetPhrase('owa.ui.settings.hero.cooldown'))
+                form:NumberWang('', 'owa_hero_customization.' .. removeSpaces(heroName) .. '.ability.' .. removeSpaces(ability.name) .. '.cooldown', 0, 100)
+            end
+
+            if hero.customSettings ~= nil then
+                for _, customSetting in pairs(hero.customSettings) do
+                    form:NumSlider(customSetting.name, 'owa_hero_customization.' .. removeSpaces(heroName) .. '.' .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+                    if customSetting.help then
+                        form:Help(customSetting.help)
+                    end
                 end
             end
+
+            if hero.ultimate then
+                form:Help(hero.ultimate.name .. language.GetPhrase('owa.ui.settings.hero.ultimateChargeMultiplier'))
+                form:NumberWang('', 'owa_hero_customization.' .. removeSpaces(heroName) .. '.ultimate.mult', 0, 100)
+            end
         end
-        if hero.ultimate then
-            form:Help(hero.ultimate.name .. language.GetPhrase('owa.ui.settings.hero.ultimateChargeMultiplier'))
-            form:NumberWang('', 'owa_hero_customization.' .. RemoveSpaces(heroName) .. '.ultimate.mult', 0, 100)
-        end
-    end)
+    )
 end
 
 hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
@@ -114,21 +125,40 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
     end)
 
     addOWASettingsPage('#owa.controls', 'Controls', function(form)
-        ability1Binder = createBinder(form, language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 1', function(num)
-            updateKeyBinding('ability1', num)
-        end, OWAControls.ability1)
+        ability1Binder = createBinder(
+            form,
+            language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 1',
+            function(num)
+                updateKeyBinding('ability1', num)
+            end,
+            OWA_controls.ability1
+        )
 
-        ability2Binder = createBinder(form, language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 2', function(num)
-            updateKeyBinding('ability2', num)
-        end, OWAControls.ability2)
+        ability2Binder = createBinder(
+            form,
+            language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 2',
+            function(num)
+                updateKeyBinding('ability2', num)
+            end,
+            OWA_controls.ability2
+        )
 
-        ultimateBinder = createBinder(form, '#owa.ui.settings.controls.castUltimate', function(num)
-            updateKeyBinding('ultimate', num)
-        end, OWAControls.ultimate)
+        ultimateBinder = createBinder(
+            form,
+            '#owa.ui.settings.controls.castUltimate',
+            function(num)
+                updateKeyBinding('ultimate', num)
+            end,
+            OWA_controls.ultimate
+        )
 
-        showHeroSelectScreenBinder = createBinder(form, '#owa.ui.settings.controls.showHeroSelectScreen', function(num)
-            updateKeyBinding('showHeroSelectScreen', num)
-        end, OWAControls.showHeroSelectScreen)
+        showHeroSelectScreenBinder = createBinder(
+            form,
+            '#owa.ui.settings.controls.showHeroSelectScreen',
+            function(num)
+                updateKeyBinding('showHeroSelectScreen', num)
+            end,
+            OWA_controls.showHeroSelectScreen)
     end)
 
     for heroName, _ in pairs(HEROES) do
@@ -153,5 +183,8 @@ function OWA_toggleHeroSelectScreen()
 end
 
 net.Receive('allyChangedHero', function()
-    chat.AddText(Color(181, 150, 70), net.ReadString() .. language.GetPhrase('owa.ui.chat.allyChangedHero.1') .. net.ReadString() .. '.')
+    chat.AddText(
+        Color(181, 150, 70),
+        net.ReadString() .. language.GetPhrase('owa.ui.chat.allyChangedHero.1') .. net.ReadString() .. '.'
+    )
 end)
