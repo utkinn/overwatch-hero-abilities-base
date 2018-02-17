@@ -7,7 +7,7 @@ function addSharedConcommand(command)
                 net.WriteFloat(newValue)
             net.SendToServer()
         else
-            MsgC(Color(255, 0, 0), language.GetPhrase('ui.settings.admin.denied') .. '\n')
+            MsgC(Color(255, 0, 0), language.GetPhrase('ui.settings.admin.denied')..'\n')
             command:SetString(oldValue)
         end
     end)

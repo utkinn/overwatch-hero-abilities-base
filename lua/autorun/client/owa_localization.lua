@@ -179,8 +179,8 @@ phrases = {
 local userLanguage = GetConVar('owa_ui_language'):GetString()
 for code, phrasesTable in pairs(phrases) do
     if userLanguage == 'en' then
-        language.Add('owa.' .. code, phrasesTable[1])
+        language.Add('owa.'..code, phrasesTable[1])
     elseif userLanguage == 'ru' then
-        language.Add('owa.' .. code, phrasesTable[2] and phrasesTable[2] or phrasesTable[1])
+        language.Add('owa.'..code, phrasesTable[2] and phrasesTable[2] or phrasesTable[1])
     end
 end

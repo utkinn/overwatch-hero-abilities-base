@@ -4,7 +4,7 @@ include('client/constants.lua')
 local showHeroSelectScreen = false
 
 local function createOverwatchFont(size)
-    surface.CreateFont('overwatch' .. size, {
+    surface.CreateFont('overwatch'..size, {
         font = 'BigNoodleTooOblique',
         size = size
     })
@@ -42,7 +42,7 @@ local function createBinder(form, text, onChange, initValue)
 end
 
 local function addOWASettingsPage(name, class, DFormBuild)
-    spawnmenu.AddToolMenuOption('Utilities', '#owa.ui.settings.category', 'OWA' .. class, name, nil, nil, DFormBuild)
+    spawnmenu.AddToolMenuOption('Utilities', '#owa.ui.settings.category', 'OWA'..class, name, nil, nil, DFormBuild)
 end
 
 local function addOWAHeroSettingsPage(heroName)
@@ -51,7 +51,7 @@ local function addOWAHeroSettingsPage(heroName)
     spawnmenu.AddToolMenuOption(
         'Utilities',
         '#owa.ui.heroSettings.category',
-        'OWAHero:' .. (heroName or 'Unknown'),
+        'OWAHero:'..(heroName or 'Unknown'),
         heroName or 'Unknown',
         nil, nil,
         function(form)
@@ -60,16 +60,16 @@ local function addOWAHeroSettingsPage(heroName)
                 return
             end
 
-            form:CheckBox('#owa.ui.settings.hero.adminOnly', 'owa_hero.' .. removeSpaces(heroName) .. '.adminsOnly')
+            form:CheckBox('#owa.ui.settings.hero.adminOnly', 'owa_hero.'..removeSpaces(heroName)..'.adminsOnly')
 
             for _, ability in pairs(hero.abilities) do
-                form:Help(ability.name .. language.GetPhrase('owa.ui.settings.hero.cooldown'))
-                form:NumberWang('', 'owa_hero_customization.' .. removeSpaces(heroName) .. '.ability.' .. removeSpaces(ability.name) .. '.cooldown', 0, 100)
+                form:Help(ability.name..language.GetPhrase('owa.ui.settings.hero.cooldown'))
+                form:NumberWang('', 'owa_hero_customization.'..removeSpaces(heroName)..'.ability.'..removeSpaces(ability.name)..'.cooldown', 0, 100)
             end
 
             if hero.customSettings ~= nil then
                 for _, customSetting in pairs(hero.customSettings) do
-                    form:NumSlider(customSetting.name, 'owa_hero_customization.' .. removeSpaces(heroName) .. '.' .. customSetting.convar, customSetting.minValue, customSetting.maxValue)
+                    form:NumSlider(customSetting.name, 'owa_hero_customization.'..removeSpaces(heroName)..'.'..customSetting.convar, customSetting.minValue, customSetting.maxValue)
                     if customSetting.help then
                         form:Help(customSetting.help)
                     end
@@ -77,8 +77,8 @@ local function addOWAHeroSettingsPage(heroName)
             end
 
             if hero.ultimate then
-                form:Help(hero.ultimate.name .. language.GetPhrase('owa.ui.settings.hero.ultimateChargeMultiplier'))
-                form:NumberWang('', 'owa_hero_customization.' .. removeSpaces(heroName) .. '.ultimate.mult', 0, 100)
+                form:Help(hero.ultimate.name..language.GetPhrase('owa.ui.settings.hero.ultimateChargeMultiplier'))
+                form:NumberWang('', 'owa_hero_customization.'..removeSpaces(heroName)..'.ultimate.mult', 0, 100)
             end
         end
     )
@@ -127,7 +127,7 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
     addOWASettingsPage('#owa.controls', 'Controls', function(form)
         ability1Binder = createBinder(
             form,
-            language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 1',
+            language.GetPhrase('owa.ui.settings.controls.castAbility')..' 1',
             function(num)
                 updateKeyBinding('ability1', num)
             end,
@@ -136,7 +136,7 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
 
         ability2Binder = createBinder(
             form,
-            language.GetPhrase('owa.ui.settings.controls.castAbility') .. ' 2',
+            language.GetPhrase('owa.ui.settings.controls.castAbility')..' 2',
             function(num)
                 updateKeyBinding('ability2', num)
             end,
@@ -185,6 +185,6 @@ end
 net.Receive('allyChangedHero', function()
     chat.AddText(
         Color(181, 150, 70),
-        net.ReadString() .. language.GetPhrase('owa.ui.chat.allyChangedHero.1') .. net.ReadString() .. '.'
+        net.ReadString()..language.GetPhrase('owa.ui.chat.allyChangedHero.1')..net.ReadString()..'.'
     )
 end)

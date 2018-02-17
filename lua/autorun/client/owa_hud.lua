@@ -21,7 +21,7 @@ end)
 local TRANSPARENCY = 150
 
 local function getCooldownNWIntKey(id)
-    return 'cooldown ' .. id
+    return 'cooldown '..id
 end
 
 local function isAbilityCoolingDown(id)
