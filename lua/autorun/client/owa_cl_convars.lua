@@ -30,7 +30,7 @@ CreateClientConVar('owa_hud_halos_enemy', 1, true, false, language.GetPhrase('ow
 CreateClientConVar('owa_hero', 'none', true, true, language.GetPhrase('owa.consoleHelp.owa_hero'))
 cvars.AddChangeCallback('owa_hero', function(_, oldHeroName, newHeroName)
     validateHeroChange(oldHeroName, newHeroName)
-end, 'validateHeroChangeInput')
+end, 'Validate hero change input')
 
 CreateClientConVar('owa_suicide_on_hero_change', 0, true, true,
     language.GetPhrase('owa.consoleHelp.owa_suicide_on_hero_change'))
@@ -44,4 +44,4 @@ cvars.AddChangeCallback('owa_ui_language', function(conVar, oldLanguage, newLang
     MsgC(Color(255, 0, 0), 'Invalid language.')
     MsgN()
     conVar:SetString(oldLanguage)
-end, 'validateUILanguageChange')
+end, 'Validate UI language change')
