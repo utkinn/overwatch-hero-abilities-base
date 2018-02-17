@@ -1,5 +1,5 @@
-include('utils.lua')
-include('client/constants.lua')
+include 'utils.lua'
+include 'client/constants.lua'
 
 local function createBlankControlsTable()
     OWA_controls = {
@@ -30,29 +30,25 @@ hook.Add('Think', 'OWA Ability key pressed', function()
     if LocalPlayer():IsTyping() then return end
 
     handleControlKeyPress('ability1', function()
-        debugLog('abilityCastRequest 1')
-        net.Start('abilityCastRequest')
-            net.WriteUInt(1, 3)
-        net.SendToServer()
+        debugLog 'abilityCastRequest 1'
+        net.QuickMsg('abilityCastRequest', 1)
     end)
 
     handleControlKeyPress('ability2', function()
-        debugLog('abilityCastRequest 2')
-        net.Start('abilityCastRequest')
-            net.WriteUInt(2, 3)
-        net.SendToServer()
+        debugLog 'abilityCastRequest 2'
+        net.QuickMsg('abilityCastRequest', 2)
     end)
 
     handleControlKeyPress('ultimate', function()
-        debugLog('ultimateRequest')
-        signal('ultimateCastRequest')
+        debugLog 'ultimateRequest'
+        Signal 'ultimateCastRequest'
     end)
 
     -- TODO: Choose working one
 
     -- 1
     handleControlKeyPress('showHeroSelectScreen', function()
-        debugLog('showHeroSelectScreen')
+        debugLog 'showHeroSelectScreen'
         OWA_toggleHeroSelectScreen()
     end)
 

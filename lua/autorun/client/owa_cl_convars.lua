@@ -1,13 +1,7 @@
-local function iterateThroughHeroesToValidate()
-    for _, hero in pairs(HEROES) do
-        if newHeroName == hero.name then
-            return true
-        end
-    end
-end
+include 'claf.lua'
 
 local function validateHeroChange(oldHeroName, newHeroName)
-    local validHero = iterateThroughHeroesToValidate()
+    local validHero = Any(HEROES, function(hero) return hero.name == newHeroName end)
 
     if newHeroName == 'none' then validHero = true end
 

@@ -2,15 +2,6 @@ function removeSpaces(str)
     return str:Trim():Replace(" ", "_")
 end
 
-function signal(signalName, player)
-    net.Start(signalName)
-    if SERVER then
-        net.Send(player)
-    elseif CLIENT then
-        net.SendToServer()
-    end
-end
-
 function isFriendly(player, ent)
     if ent:IsPlayer() then
         if player:Team() == ent:Team() then return true end
