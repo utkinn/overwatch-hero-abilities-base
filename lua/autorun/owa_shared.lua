@@ -3,7 +3,7 @@ include 'utils.lua'
 --Enables/disables the debug output.
 OWA_DEBUG = true
 
-local conVarFlags = SERVER and {FCVAR_ARCHIVE, FCVAR_REPLICATED} or FCVAR_USERINFO
+local conVarFlags = Either(SERVER, {FCVAR_ARCHIVE, FCVAR_REPLICATED}, FCVAR_USERINFO)
 
 adminConVars = {
     CreateConVar("owa_hero_customization_affects_health", 1, flags, "Does selected hero affects players' health?"),

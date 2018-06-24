@@ -10,7 +10,7 @@ local function validateHeroChange(oldHeroName, newHeroName)
         MsgC(Color(255, 0, 0), language.GetPhrase('owa.consoleHelp.owa_ui_hero.invalid'))
     elseif oldHeroName ~= newHeroName then
         if GetConVar('owa_suicide_on_hero_change'):GetBool() and LocalPlayer():Alive() then
-            RunConsoleCommand('kill')
+            LocalPlayer():Kill()
         else
             chat.AddText('#owa.ui.chat.respawnRequired')
         end
