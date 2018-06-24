@@ -1,5 +1,6 @@
 OWA_supportedLanguages = { 'en', 'ru' }
 
+-- FIXME: Localization is not working for console help; remove it
 phrases = {
     ['consoleHelp.owa_ui_hero.invalid'] = {
         'Invalid hero!',
@@ -32,8 +33,8 @@ phrases = {
     },
 
     ['consoleHelp.owa_ui_language'] = {
-        'Your addon interface language. Changing it will require reconnecting.',
-        'Язык дополнения. Для изменения потребуется переподключение к серверу.'
+        'Your addon interface language. Changing it will require the game restart.',
+        'Язык дополнения. Для изменения потребуется перезапуск игры.'
     },
 
     ['ui.settings.admin'] = {
