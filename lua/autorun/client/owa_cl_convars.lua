@@ -33,7 +33,7 @@ cvars.AddChangeCallback('owa_hero', function(conVarName, oldHeroName, newHeroNam
     validateHeroChange(oldHeroName, newHeroName)
 end, 'Validate hero change input')
 
-CreateClientConVar('owa_suicide_on_hero_change', 0, true, true, 
+CreateClientConVar('owa_suicide_on_hero_change', 0, true, true,
                    language.GetPhrase('owa.consoleHelp.owa_suicide_on_hero_change'))
 
 CreateClientConVar('owa_hero_callouts', '0', true, true, "Play heroes' callouts on ability usages.")
