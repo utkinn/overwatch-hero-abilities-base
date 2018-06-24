@@ -18,11 +18,10 @@ local function validateHeroChange(oldHeroName, newHeroName)
 end
 
 local function validateLanguageChange(oldLanguage, newLanguage)
-    if table.HasValue(OWA_supportedLanguages, newLanguage) then return end
+    if OWA_supportedLanguages[newLanguage] then return end
 
-    MsgC(Color(255, 0, 0), 'Invalid language.')
-    MsgN()
-    conVar:SetString(oldLanguage)
+    MsgC(Color(255, 0, 0), 'Invalid language.\n')
+    GetConVar('owa_ui_language'):SetString(oldLanguage)
 end
 
 CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_ally'))
@@ -30,12 +29,12 @@ CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa
 CreateClientConVar('owa_hud_halos_enemy', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_enemy'))
 
 CreateClientConVar('owa_hero', 'none', true, true, language.GetPhrase('owa.consoleHelp.owa_hero'))
-cvars.AddChangeCallback('owa_hero', function(_, oldHeroName, newHeroName)
+cvars.AddChangeCallback('owa_hero', function(conVarName, oldHeroName, newHeroName)
     validateHeroChange(oldHeroName, newHeroName)
 end, 'Validate hero change input')
 
-CreateClientConVar('owa_suicide_on_hero_change', 0, true, true,
-    language.GetPhrase('owa.consoleHelp.owa_suicide_on_hero_change'))
+CreateClientConVar('owa_suicide_on_hero_change', 0, true, true, 
+                   language.GetPhrase('owa.consoleHelp.owa_suicide_on_hero_change'))
 
 CreateClientConVar('owa_hero_callouts', '0', true, true, "Play heroes' callouts on ability usages.")
 

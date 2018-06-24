@@ -1,4 +1,4 @@
-OWA_supportedLanguages = { 'en', 'ru' }
+OWA_supportedLanguages = { en = true, ru = true }
 
 -- FIXME: Localization is not working for console help; remove it
 phrases = {
@@ -182,6 +182,6 @@ for code, phrasesTable in pairs(phrases) do
     if userLanguage == 'en' then
         language.Add('owa.'..code, phrasesTable[1])
     elseif userLanguage == 'ru' then
-        language.Add('owa.'..code, phrasesTable[2] and phrasesTable[2] or phrasesTable[1])
+        language.Add('owa.'..code, Either(phrasesTable[2], phrasesTable[2], phrasesTable[1]))
     end
 end
