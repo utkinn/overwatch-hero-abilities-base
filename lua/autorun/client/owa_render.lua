@@ -9,15 +9,16 @@ end)
 
 hook.Add('PreDrawHalos', 'EnemyHalos', function()
     if GetConVar('owa_hud_halos_enemy'):GetBool() then return end
-    
-    local enemies = {}
-    local teams = team.GetAllTeams()
 
-    for _, vTeam in pairs(teams) do
-        for _, vPlayer in pairs(team.GetPlayers(vTeam)) do
-            table.insert(enemies, vPlayer)
-        end
-    end
+    local enemies = Filter(ents.GetAll(), function(ent) return ent:isFriendly() end)
+    -- local enemies = {}
+    -- local teams = team.GetAllTeams()
+    --
+    -- for _, vTeam in pairs(teams) do
+    --     for _, vPlayer in pairs(team.GetPlayers(vTeam)) do
+    --         table.insert(enemies, vPlayer)
+    --     end
+    -- end
 
     halo.Add(enemies, HALO_ENEMY_COLOR, 5, 5, 2)
 end)

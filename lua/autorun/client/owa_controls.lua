@@ -1,3 +1,4 @@
+include 'claf.lua'
 include 'utils.lua'
 include 'client/constants.lua'
 
