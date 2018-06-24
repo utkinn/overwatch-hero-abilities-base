@@ -10,16 +10,26 @@ local function createOverwatchFont(size)
     })
 end
 
+local function writeControlsFile()
+    file.Write(OWA_CONTROLS_FILE, util.TableToJSON(OWA_controls))
+end
+
 local function updateKeyBinding(control, num)
-    OWA_controls = {}
+    if OWA_controls == nil then
+        OWA_controls = {}
+    end
 
     if fileIsEmpty(OWA_CONTROLS_FILE) then
         local fileContents = file.Read(OWA_CONTROLS_FILE, 'DATA')
+        if fileContents == nil then
+            writeControlsFile()
+            return
+        end
         OWA_controls = util.JSONToTable(fileContents)
     end
 
     OWA_controls[control] = num
-    file.Write(OWA_CONTROLS_FILE, util.TableToJSON(OWA_controls))
+    writeControlsFile()
 end
 
 createOverwatchFont(60)
@@ -188,3 +198,15 @@ net.Receive('allyChangedHero', function()
         net.ReadString()..language.GetPhrase('owa.ui.chat.allyChangedHero.1')..net.ReadString()..'.'
     )
 end)
+
+-- FIXME
+--[[
+[ERROR] addons/overwatch-hero-abilities-base/lua/autorun/client/owa_ui.lua:18: bad argument #1 to 'JSONToTable' (string expected, got nil)
+  1. JSONToTable - [C]:-1
+   2. updateKeyBinding - addons/overwatch-hero-abilities-base/lua/autorun/client/owa_ui.lua:18
+    3. onChange - addons/overwatch-hero-abilities-base/lua/autorun/client/owa_ui.lua:132
+     4. SetSelectedNumber - addons/overwatch-hero-abilities-base/lua/autorun/client/owa_ui.lua:37
+      5. SetSelected - lua/vgui/dbinder.lua:43
+       6. SetValue - lua/vgui/dbinder.lua:79
+        7. unknown - lua/vgui/dbinder.lua:63
+]]
