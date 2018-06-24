@@ -2,11 +2,13 @@ function removeSpaces(str)
     return str:Trim():Replace(" ", "_")
 end
 
-function isFriendly(player, ent)
+local Player = FindMetaTable 'Player'
+
+function Player:isFriendly(ent)
     if ent:IsPlayer() then
-        if player:Team() == ent:Team() then return true end
+        if self:Team() == ent:Team() then return true end
     elseif hitEnt:IsNPC() then
-        local disposition = ent:Disposition(player)
+        local disposition = ent:Disposition(self)
         if disposition == D_LI or disposition == D_NU then return true end
     end
     return false
