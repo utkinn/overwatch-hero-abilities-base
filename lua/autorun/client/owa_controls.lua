@@ -3,7 +3,7 @@ include 'owa_utils.lua'
 include 'owa_constants.lua'
 
 local function createBlankControlsTable()
-    OWA_controls = {
+    return {
         ability1 = nil,
         ability2 = nil,
         ultimate = nil,
@@ -12,7 +12,7 @@ local function createBlankControlsTable()
 end
 
 local function loadControlsFromFile()
-    OWA_controls = util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
+    return util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
 end
 
 local function handleControlKeyPress(control, callback)
@@ -22,9 +22,9 @@ local function handleControlKeyPress(control, callback)
 end
 
 if file.Exists(OWA_CONTROLS_FILE, 'DATA') then
-    loadControlsFromFile()
+    OWA_controls = loadControlsFromFile()
 else
-    createBlankControlsTable()
+    OWA_controls = createBlankControlsTable()
 end
 
 hook.Add('Think', 'OWA Ability key pressed', function()

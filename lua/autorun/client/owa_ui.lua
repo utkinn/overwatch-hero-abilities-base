@@ -74,12 +74,14 @@ local function addOWAHeroSettingsPage(heroName)
 
             for _, ability in pairs(hero.abilities) do
                 form:Help(ability.name..language.GetPhrase('owa.ui.settings.hero.cooldown'))
-                form:NumberWang('', 'owa_hero_customization.'..removeSpaces(heroName)..'.ability.'..removeSpaces(ability.name)..'.cooldown', 0, 100)
+                form:NumberWang('', 'owa_hero_customization.'..removeSpaces(heroName)..'.ability.'
+                                ..removeSpaces(ability.name)..'.cooldown', 0, 100)
             end
 
             if hero.customSettings ~= nil then
                 for _, customSetting in pairs(hero.customSettings) do
-                    form:NumSlider(customSetting.name, 'owa_hero_customization.'..removeSpaces(heroName)..'.'..customSetting.convar, customSetting.minValue, customSetting.maxValue)
+                    form:NumSlider(customSetting.name, 'owa_hero_customization.'..removeSpaces(heroName)..'.'
+                                   ..customSetting.convar, customSetting.minValue, customSetting.maxValue)
                     if customSetting.help then
                         form:Help(customSetting.help)
                     end
@@ -92,6 +94,10 @@ local function addOWAHeroSettingsPage(heroName)
             end
         end
     )
+end
+
+function OWA_toggleHeroSelectScreen()
+    showHeroSelectScreen = not showHeroSelectScreen
 end
 
 hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
@@ -187,10 +193,6 @@ hook.Add('DrawOverlay', 'showHeroSelectScreen', function()
     surface.SetTextPos(ScrW() * 0.05, ScrH() * 0.05)
     surface.DrawText('#ui.settings.controls.selectHero')
 end)
-
-function OWA_toggleHeroSelectScreen()
-    showHeroSelectScreen = not showHeroSelectScreen
-end
 
 net.Receive('allyChangedHero', function()
     chat.AddText(
