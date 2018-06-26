@@ -1,7 +1,9 @@
 -- TODO: Refactor this file
 include('owa_constants.lua')
+include 'claf.lua'
 
 local showHeroSelectScreen = false
+local nextHeroSelectScreenToggleTime = 0
 
 local function createOverwatchFont(size)
     surface.CreateFont('overwatch'..size, {
@@ -97,7 +99,11 @@ local function addOWAHeroSettingsPage(heroName)
 end
 
 function OWA_toggleHeroSelectScreen()
+    if RealTime() < nextHeroSelectScreenToggleTime then return end
+
     showHeroSelectScreen = not showHeroSelectScreen
+    nextHeroSelectScreenToggleTime = RealTime() + 0.25
+    net.QuickMsg('OWA: Hero select menu entered/exited', showHeroSelectScreen)
 end
 
 hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
