@@ -1,14 +1,12 @@
 include 'claf.lua'
 
 local function validateHeroChange(oldHeroName, newHeroName)
-    local validHero = Any(HEROES, function(hero) return hero.name == newHeroName end)
+    local isHeroValid = Any(HEROES, function(hero) return hero.name == newHeroName end) or newHeroName == 'none'
 
-    if newHeroName == 'none' then validHero = true end
-
-    if not validHero then
-        GetConVar('owa_hero'):SetString(oldHeroName)
+    if not isHeroValid then
+        GetConVar('owa_hero'):SetString(oldHeroName)  -- Reverting the change
         MsgC(Color(255, 0, 0), language.GetPhrase('owa.consoleHelp.owa_ui_hero.invalid'))
-    elseif oldHeroName ~= newHeroName then
+    elseif oldHeroName ~= newHeroName then  -- elseif hero was changed, suicide if enabled
         if GetConVar('owa_suicide_on_hero_change'):GetBool() and LocalPlayer():Alive() then
             Signal 'OWA: Suicide'
         else
@@ -18,10 +16,11 @@ local function validateHeroChange(oldHeroName, newHeroName)
 end
 
 local function validateLanguageChange(oldLanguage, newLanguage)
+    -- Return if the new language is in "supported" list, keep going if not
     if OWA_supportedLanguages[newLanguage] then return end
 
     MsgC(Color(255, 0, 0), 'Invalid language.\n')
-    GetConVar('owa_ui_language'):SetString(oldLanguage)
+    GetConVar('owa_ui_language'):SetString(oldLanguage)  -- Reverting convar value
 end
 
 CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_ally'))
