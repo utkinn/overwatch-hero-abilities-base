@@ -1,6 +1,6 @@
-AddCSLuaFile('utils.lua')
-AddCSLuaFile('client/owa_shared_console_commands.lua')
-AddCSLuaFile('client/constants.lua')
+AddCSLuaFile('owa_utils.lua')
+AddCSLuaFile('owa_shared_console_commands.lua')
+AddCSLuaFile('owa_constants.lua')
 
 -- local newHero =
 -- {

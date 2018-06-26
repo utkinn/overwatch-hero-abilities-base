@@ -1,4 +1,4 @@
-include 'client/owa_shared_console_commands.lua'
+include 'owa_shared_console_commands.lua'
 include 'claf.lua'
 
 --Admins' convars change handling

@@ -1,5 +1,5 @@
 -- TODO: Refactor this file
-include('client/constants.lua')
+include('owa_constants.lua')
 
 local showHeroSelectScreen = false
 

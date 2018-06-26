@@ -1,6 +1,6 @@
 include 'claf.lua'
-include 'utils.lua'
-include 'client/constants.lua'
+include 'owa_utils.lua'
+include 'owa_constants.lua'
 
 local function createBlankControlsTable()
     OWA_controls = {

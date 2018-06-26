@@ -1,4 +1,4 @@
-include 'utils.lua'
+include 'owa_utils.lua'
 
 --Enables/disables the debug output.
 OWA_DEBUG = true
