@@ -191,7 +191,7 @@ hook.Add('DrawOverlay', 'showHeroSelectScreen', function()
     surface.SetFont('overwatch60')
     surface.SetTextColor(255, 255, 255, 255)
     surface.SetTextPos(ScrW() * 0.05, ScrH() * 0.05)
-    surface.DrawText('#ui.settings.controls.selectHero')
+    surface.DrawText('#owa.ui.settings.controls.selectHero')
 end)
 
 net.Receive('allyChangedHero', function()
