@@ -16,7 +16,7 @@ surface.CreateFont('OWA Futura 24', {
 hook.Add('Think', 'updateHero', function()
     heroName = LocalPlayer():GetNWString('hero')
 end)
-    -- local materials = HEROES[LocalPlayer():GetNWString('hero')].materials
+    -- local materials = OWA_HEROES[LocalPlayer():GetNWString('hero')].materials
     -- PrintTable(materials)
     -- if materials.abilities[1] then
         -- ability1Material = Material(materials.abilities[1])
@@ -74,7 +74,7 @@ hook.Add('HUDPaint', 'Draw OWA abilities HUD', function()
 
     draw.RoundedBox(8, ScrW() * 0.62, ScrH() * 0.9, ScrW() * 0.2,  ScrH() * 0.09, Color(0, 0, 0, TRANSPARENCY))
 
-    local hero = HEROES[LocalPlayer():GetNWString('hero')]
+    local hero = OWA_HEROES[LocalPlayer():GetNWString('hero')]
     local materials = hero.materials
 
     drawAbilityIcon(1, hero, ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.64, ScrH() * 0.92)

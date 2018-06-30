@@ -72,7 +72,7 @@ local function runShieldRestore(victim)
     timer.Simple(3, function()
         timer.Create('restoreShield:'..victim:Nick(), 0.1, 0, function()
             local newValue = victim:GetNWInt('shield') + 3
-            local maxValue = HEROES[victim:GetNWString('hero')].shield
+            local maxValue = OWA_HEROES[victim:GetNWString('hero')].shield
 
             if newValue >= maxValue then
                 newValue = maxValue
@@ -95,7 +95,7 @@ local function hurtShield(victim, damageData)
 end
 
 function abilitySucceeded(ply, id)
-    local hero = HEROES[ply:GetNWString('hero')]
+    local hero = OWA_HEROES[ply:GetNWString('hero')]
     local cooldownNWIntKey = 'cooldown '..id
     local cooldownTimerKey = 'cooldown '..id..' '..ply:UserID()
     local cooldown = hero.abilities[id].cooldown
@@ -114,7 +114,7 @@ function abilitySucceeded(ply, id)
 end
 
 hook.Add('PlayerSpawn', 'setHero', function(ply)
-    local heroToSet = HEROES[ply:GetInfo('owa_hero')]
+    local heroToSet = OWA_HEROES[ply:GetInfo('owa_hero')]
     if heroToSet ~= nil then
         setPlayerHero(ply, heroToSet)
     else
@@ -133,7 +133,7 @@ net.Receive('abilityCastRequest', function(_, ply)
 
     local ability = net.ReadUInt(3)
     local cooldownNWIntKey = 'cooldown '..ability
-    local hero = HEROES[ply:GetNWString('hero')]
+    local hero = OWA_HEROES[ply:GetNWString('hero')]
 
     if ply:GetNWInt(cooldownNWIntKey) <= 0 or DEBUG then
         hook.Run('AbilityCasted', ply, hero, ability)
@@ -145,7 +145,7 @@ end)
 net.Receive('ultimateCastRequest', function(_, ply)
     local heroName = ply:GetNWString('hero')
     if heroName == 'none' then return end
-    local hero = HEROES[heroName]
+    local hero = OWA_HEROES[heroName]
 
     if ply:GetNWInt('ultimateCharge') >= hero.ultimate.pointsRequired then
         local success = hero.ultimate:cast(ply)
