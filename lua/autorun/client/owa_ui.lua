@@ -56,7 +56,7 @@ local function addOWASettingsPage(name, class, DFormBuild)
 end
 
 local function addOWAHeroSettingsPage(heroName)
-    local hero = HEROES[heroName]
+    local hero = OWA_HEROES[heroName]
 
     spawnmenu.AddToolMenuOption(
         'Utilities',
@@ -124,10 +124,10 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
     addOWASettingsPage('#owa.hero', 'Hero', function(form)
         heroComboBox = form:ComboBox('#owa.hero', 'owa_hero')
         heroComboBox:AddChoice('none')
-        for _, hero in pairs(HEROES) do
+        for _, hero in pairs(OWA_HEROES) do
             heroComboBox:AddChoice(hero.name)
         end
-        -- local hero = HEROES[heroComboBox:GetSelected()]
+        -- local hero = OWA_HEROES[heroComboBox:GetSelected()]
         -- if hero ~= nil then
             -- form:Help(hero.description)
             -- for id, ability in pairs(hero.abilities) do
@@ -177,7 +177,7 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
             OWA_controls.showHeroSelectScreen)
     end)
 
-    for heroName, _ in pairs(HEROES) do
+    for heroName, _ in pairs(OWA_HEROES) do
         addOWAHeroSettingsPage(heroName)
     end
 end)

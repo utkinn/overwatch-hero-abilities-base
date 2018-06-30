@@ -14,7 +14,7 @@ adminConVars = {
 }
 
 --TODO: Hero customization
-for _, hero in pairs(HEROES) do
+for _, hero in pairs(OWA_HEROES) do
     table.insert(adminConVars, CreateConVar(
         "owa_hero."..removeSpaces(hero.name)..".adminsOnly",
         0,

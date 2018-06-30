@@ -1,11 +1,11 @@
-HEROES = {}
+OWA_HEROES = {}
 
 function OverwatchHero(infoTable)
-    if HEROES ~= nil then
-        HEROES[infoTable.name or "Mister X"] = infoTable
+    if OWA_HEROES ~= nil then
+        OWA_HEROES[infoTable.name or "Mister X"] = infoTable
     else
         hook.Add("PreGamemodeLoaded", "addHero", function()
-            HEROES[infoTable.name or "Mister X"] = infoTable
+            OWA_HEROES[infoTable.name or "Mister X"] = infoTable
         end)
     end
 end
