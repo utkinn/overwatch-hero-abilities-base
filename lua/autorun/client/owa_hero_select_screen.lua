@@ -1,4 +1,5 @@
 local shouldShowHeroSelectScreen = false
+local nextHeroSelectScreenToggleTime = 0
 
 function OWA_toggleHeroSelectScreen()
     if RealTime() < nextHeroSelectScreenToggleTime then return end

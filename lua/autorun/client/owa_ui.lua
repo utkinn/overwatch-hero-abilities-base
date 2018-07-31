@@ -2,8 +2,6 @@
 include('owa_constants.lua')
 include 'claf.lua'
 
-local nextHeroSelectScreenToggleTime = 0
-
 local function createOverwatchFont(size)
     surface.CreateFont('overwatch'..size, {
         font = 'BigNoodleTooOblique',
