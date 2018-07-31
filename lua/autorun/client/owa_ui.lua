@@ -169,7 +169,8 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
             function(num)
                 updateKeyBinding('showHeroSelectScreen', num)
             end,
-            OWA_controls.showHeroSelectScreen)
+            OWA_controls.showHeroSelectScreen
+        )
     end)
 
     for heroName, _ in pairs(HEROES) do
