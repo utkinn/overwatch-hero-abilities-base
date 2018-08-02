@@ -131,7 +131,7 @@ net.Receive('abilityCastRequest', function(_, ply)
     --For some reason 'normal' method was conflicting with TFA VOX.
     if ply:GetNWString('hero') == 'none' then return end
 
-    local ability = net.ReadUInt(3)
+    local ability = net.Read()
     local cooldownNWIntKey = 'cooldown '..ability
     local hero = OWA_HEROES[ply:GetNWString('hero')]
 
