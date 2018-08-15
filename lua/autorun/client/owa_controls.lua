@@ -2,15 +2,6 @@ include 'claf.lua'
 include 'owa_utils.lua'
 include 'owa_constants.lua'
 
-local function createBlankControlsTable()
-    return {
-        ability1 = nil,
-        ability2 = nil,
-        ultimate = nil,
-        showHeroSelectScreen = nil
-    }
-end
-
 local function loadControlsFromFile()
     return util.JSONToTable(file.Read(OWA_CONTROLS_FILE))
 end
@@ -21,13 +12,10 @@ local function handleControlKeyPress(control, callback)
     callback()
 end
 
-if file.Exists(OWA_CONTROLS_FILE, 'DATA') then
-    OWA_controls = loadControlsFromFile()
-else
-    OWA_controls = createBlankControlsTable()
-end
+OWA_controls = Either(file.Exists(OWA_CONTROLS_FILE, 'DATA'), loadControlsFromFile(), {})
 
 hook.Add('Think', 'OWA Ability key pressed', function()
+    -- Don't trigger if player is typing something in chat
     if LocalPlayer():IsTyping() then return end
 
     handleControlKeyPress('ability1', function()
@@ -39,7 +27,7 @@ hook.Add('Think', 'OWA Ability key pressed', function()
     end)
 
     handleControlKeyPress('ultimate', function()
-        Signal 'ultimateCastRequest'
+        Signal('ultimateCastRequest')
     end)
 
     handleControlKeyPress('showHeroSelectScreen', function()

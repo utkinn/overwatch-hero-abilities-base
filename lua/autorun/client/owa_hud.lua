@@ -79,5 +79,5 @@ hook.Add('HUDPaint', 'Draw OWA abilities HUD', function()
 end)
 
 hook.Add('HUDPaint', 'DrawShield', function()
-    --TODO
+    -- TODO
 end)

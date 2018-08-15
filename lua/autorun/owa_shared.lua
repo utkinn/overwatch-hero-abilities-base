@@ -1,6 +1,6 @@
 include 'owa_utils.lua'
 
---Enables/disables the debug output.
+-- Enables/disables the debug output.
 OWA_DEBUG = true
 
 local conVarFlags = Either(SERVER, {FCVAR_ARCHIVE, FCVAR_REPLICATED}, FCVAR_USERINFO)
@@ -13,7 +13,7 @@ adminConVars = {
     CreateConVar("owa_hero_customization_affects_weapons", 1, flags, "Does selected hero affects players' weapons?")
 }
 
---TODO: Hero customization
+-- TODO: Hero customization
 for _, hero in pairs(OWA_HEROES) do
     table.insert(adminConVars, CreateConVar(
         "owa_hero."..removeSpaces(hero.name)..".adminsOnly",
