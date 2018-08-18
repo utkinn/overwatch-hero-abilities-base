@@ -130,8 +130,6 @@ hook.Add('EntityTakeDamage', 'decreaseShield', function(target, damageData)
 end)
 
 net.Receive('abilityCastRequest', function(_, ply)
-    -- Anti-conflict workaround:
-    -- For some reason 'normal' method was conflicting with TFA VOX.
     if ply:GetNWString('hero') == 'none' then return end
 
     local ability = net.Read()
@@ -151,7 +149,7 @@ net.Receive('ultimateCastRequest', function(_, ply)
     local hero = OWA_HEROES[heroName]
 
     if ply:GetNWInt('ultimateCharge') >= hero.ultimate.pointsRequired then
-        local success = hero.ultimate:cast(ply)
+        local success = hero.ultimate:castFunction(ply)
 
         if success then
             ply:SetNWInt('ultimateCharge', 0)

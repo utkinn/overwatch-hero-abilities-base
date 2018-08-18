@@ -68,13 +68,13 @@ hook.Add('HUDPaint', 'Draw OWA abilities HUD', function()
     local materials = hero.materials
 
     drawAbilityIcon(1, hero, ScrW() * 0.63, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.64, ScrH() * 0.92)
-    drawAbilityIcon(2, hero, ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.67, ScrH() * 0.92)
+    drawAbilityIcon(2, hero, ScrW() * 0.68, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05, ScrW() * 0.67, ScrH() * 0.92)
 
     -- TODO: Refactor
     if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
         surface.SetMaterial(materials.ultimate)
         surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
-        surface.DrawTexturedRect(ScrW() * 0.67, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+        surface.DrawTexturedRect(ScrW() * 0.72, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
     end
 end)
 

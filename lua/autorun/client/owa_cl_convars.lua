@@ -50,7 +50,6 @@ CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa
 CreateClientConVar('owa_hud_halos_enemy', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_enemy'))
 
 CreateClientConVar('owa_hero', 'none', true, true, language.GetPhrase('owa.consoleHelp.owa_hero'))
-
 addHeroChangeCallback()
 
 CreateClientConVar('owa_suicide_on_hero_change', 0, true, true,

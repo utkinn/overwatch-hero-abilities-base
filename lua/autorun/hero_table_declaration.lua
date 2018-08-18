@@ -1,13 +1,18 @@
 OWA_HEROES = {}
 
 function OverwatchHero(infoTable)
+    local name = infoTable.name or "Mister X"
+    print(name)
+    local function add()
+        OWA_HEROES[name] = infoTable
+    end
+
     if OWA_HEROES ~= nil then
-        OWA_HEROES[infoTable.name or "Mister X"] = infoTable
+        add()
     else
-        hook.Add("PreGamemodeLoaded", "addHero", function()
-            OWA_HEROES[infoTable.name or "Mister X"] = infoTable
-        end)
+        hook.Add("PreGamemodeLoaded", "AddHero_"..name, add)
     end
 end
 
-hook.Run('OWAInitialized')
+hook.Run('OWA: Add hero')
+hook.Run('OWA: Heroes added')
