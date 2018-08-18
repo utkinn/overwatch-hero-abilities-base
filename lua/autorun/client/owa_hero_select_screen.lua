@@ -41,7 +41,7 @@ end
 function OWA_toggleHeroSelectScreen()
     if RealTime() < nextHeroSelectScreenToggleTime then return end
 
-    if heroSelectScreen == nil then
+    if not IsValid(heroSelectScreen) then
         heroSelectScreen = createHeroSelectScreen()
         heroSelectScreen:MakePopup()
     else
