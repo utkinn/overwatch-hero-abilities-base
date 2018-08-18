@@ -20,13 +20,37 @@ end
 local function attachSelectHeroLabel(root)
     local selectHeroLabel = vgui.Create('DLabel', root)
     selectHeroLabel:SetText('')
-    selectHeroLabel:SetSize(500, 500)
+    selectHeroLabel:SetSize(700, 500)
 
     function selectHeroLabel:Paint(width, height)
-        surface.SetFont('overwatch60')
+        surface.SetFont('OWA BigNoodleToo 128')
         surface.SetTextColor(255, 255, 255, 255)
         surface.SetTextPos(width * 0.05, height * 0.05)
         surface.DrawText('#owa.ui.settings.controls.selectHero')
+    end
+end
+
+local function attachHeroList(root)
+    local y = ScrH() * 0.15
+
+    local function attachHeroListItem(hero)
+        print('hey')
+        local item = vgui.Create('DButton', root)
+        item:SetFont('OWA Futura 24')
+        item:SetText(hero.name or 'Unknown')
+
+        item:SetPos(ScrW() * 0.15, y)
+
+        local X_SIZE, Y_SIZE = ScrW() * 0.2, ScrH() * 0.07
+        item:SetSize(X_SIZE, Y_SIZE)
+
+        -- TODO
+
+        y = y + Y_SIZE
+    end
+
+    for _, v in pairs(OWA_HEROES) do
+        attachHeroListItem(v)
     end
 end
 
@@ -34,6 +58,7 @@ local function createHeroSelectScreen()
     local root = createRoot()
 
     attachSelectHeroLabel(root)
+    attachHeroList(root)
 
     return root
 end
