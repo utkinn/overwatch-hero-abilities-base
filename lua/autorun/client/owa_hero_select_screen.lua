@@ -1,5 +1,7 @@
 local nextHeroSelectScreenToggleTime = 0
 local heroSelectScreen = nil
+local NONE_HERO_ICON = Material('none.png', 'noclamp smooth')
+local UNKNOWN_HERO_ICON = Material('unknown.png', 'noclamp smooth')
 
 local function createRoot()
     local root = vgui.Create('DFrame')
@@ -31,23 +33,50 @@ local function attachSelectHeroLabel(root)
 end
 
 local function attachHeroList(root)
-    local y = ScrH() * 0.15
+    local y = ScrH() * 0.2
 
-    local function attachHeroListItem(hero)
-        print('hey')
+    local function attachItem(text, clickHandler, picture, picColor)
         local item = vgui.Create('DButton', root)
-        item:SetFont('OWA Futura 24')
-        item:SetText(hero.name or 'Unknown')
+        -- item:SetFont('OWA Futura 24')
+        item:SetText('')
 
-        item:SetPos(ScrW() * 0.15, y)
+        item:SetPos(ScrW() * 0.05, y)
 
-        local X_SIZE, Y_SIZE = ScrW() * 0.2, ScrH() * 0.07
+        local X_SIZE, Y_SIZE = ScrW() * 0.2, ScrH() * 0.06
         item:SetSize(X_SIZE, Y_SIZE)
 
-        -- TODO
+        function item:Paint(width, height)
+            surface.SetDrawColor(0, 0, 0, 220)
+            surface.DrawRect(0, 0, width, height)
 
-        y = y + Y_SIZE
+            surface.SetDrawColor(200, 200, 200, 220)
+            surface.DrawOutlinedRect(0, 0, width, height)
+
+            draw.DrawText(text, 'OWA Futura 24', width / 2, height / 2 - ScrH() * 0.011, Color(255, 255, 255, 220),
+                          TEXT_ALIGN_CENTER)
+
+            surface.SetDrawColor(picColor)
+            surface.SetMaterial(picture)
+            surface.DrawTexturedRect(ScrH() * 0.005, ScrH() * 0.005, ScrH() * 0.05, ScrH() * 0.05)
+        end
+
+        item.DoClick = clickHandler
+
+        y = y + Y_SIZE + ScrH() * 0.002
     end
+
+    local function attachHeroListItem(hero)
+        local name = hero.name or 'Unknown'
+        attachItem(name, function()
+            GetConVar('owa_hero'):SetString(name)
+            root:Close()
+        end, hero.portrait or UNKNOWN_HERO_ICON, Color(255, 255, 255, 220))
+    end
+
+    attachItem('None', function()
+        GetConVar('owa_hero'):SetString('none')
+        root:Close()
+    end, NONE_HERO_ICON, Color(255, 50, 50, 220))
 
     for _, v in pairs(OWA_HEROES) do
         attachHeroListItem(v)
@@ -71,7 +100,6 @@ function OWA_toggleHeroSelectScreen()
         heroSelectScreen:MakePopup()
     else
         heroSelectScreen:Close()
-        heroSelectScreen = nil
     end
     nextHeroSelectScreenToggleTime = RealTime() + 0.25
 end
