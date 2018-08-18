@@ -1,7 +1,7 @@
 include 'claf.lua'
 
 local function validateHeroChange(oldHeroName, newHeroName)
-    local isHeroValid = Any(HEROES, function(hero) return hero.name == newHeroName end) or newHeroName == 'none'
+    local isHeroValid = Any(OWA_HEROES, function(hero) return hero.name == newHeroName end) or newHeroName == 'none'
 
     if not isHeroValid then
         GetConVar('owa_hero'):SetString(oldHeroName)  -- Reverting the change

@@ -10,4 +10,4 @@ function OverwatchHero(infoTable)
     end
 end
 
-hook.Run('OWAInitialized')
+hook.Run('OWA: Add hero')
