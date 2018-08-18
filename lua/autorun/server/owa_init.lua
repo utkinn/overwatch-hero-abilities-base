@@ -116,7 +116,7 @@ function abilitySucceeded(ply, id)
     end)
 end
 
-hook.Add('PlayerSpawn', 'setHero', function(ply)
+hook.Add('PlayerLoadout', 'setHero', function(ply)
     local heroToSet = OWA_HEROES[ply:GetInfo('owa_hero')]
     if heroToSet ~= nil then
         setPlayerHero(ply, heroToSet)
