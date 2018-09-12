@@ -10,4 +10,6 @@ function OverwatchHero(infoTable)
     end
 end
 
+OWA_LOADED = true
+
 hook.Run('OWA: Add hero')
