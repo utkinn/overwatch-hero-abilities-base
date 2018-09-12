@@ -1,5 +1,6 @@
 local nextHeroSelectScreenToggleTime = 0
 local heroSelectScreen = nil
+-- local heroInfoPanel = nil
 local NONE_HERO_ICON = Material('none.png', 'noclamp smooth')
 local UNKNOWN_HERO_ICON = Material('unknown.png', 'noclamp smooth')
 
@@ -32,10 +33,29 @@ local function attachSelectHeroLabel(root)
     end
 end
 
-local function attachHeroList(root)
+local function attachHeroList(root, info)
     local y = ScrH() * 0.2
 
-    local function attachItem(text, clickHandler, picture, picColor)
+    local function attachItem(hero)
+        local text, clickHandler, picture, picColor
+        if hero == nil then
+            text = 'None'
+            clickHandler = function()
+                GetConVar('owa_hero'):SetString('none')
+                root:Close()
+            end
+            picture = NONE_HERO_ICON
+            picColor = Color(255, 50, 50, 220)
+        else
+            text = hero.name or 'Unknown'
+            clickHandler = function()
+                GetConVar('owa_hero'):SetString(name)
+                root:Close()
+            end
+            picture = hero.materials.portrait or UNKNOWN_HERO_ICON
+            picColor = Color(255, 255, 255, 220)
+        end
+
         local item = vgui.Create('DButton', root)
         -- item:SetFont('OWA Futura 24')
         item:SetText('')
@@ -62,32 +82,88 @@ local function attachHeroList(root)
 
         item.DoClick = clickHandler
 
+        function item:OnCursorEntered()
+            info:showHeroData(hero)
+        end
+
+        function item:OnCursorExited()
+            info:SetVisible(false)
+        end
+
         y = y + Y_SIZE + ScrH() * 0.002
     end
 
-    local function attachHeroListItem(hero)
-        local name = hero.name or 'Unknown'
-        attachItem(name, function()
-            GetConVar('owa_hero'):SetString(name)
-            root:Close()
-        end, hero.materials.portrait or UNKNOWN_HERO_ICON, Color(255, 255, 255, 220))
-    end
-
-    attachItem('None', function()
-        GetConVar('owa_hero'):SetString('none')
-        root:Close()
-    end, NONE_HERO_ICON, Color(255, 50, 50, 220))
+    attachItem()
 
     for _, v in pairs(OWA_HEROES) do
-        attachHeroListItem(v)
+        attachItem(v)
     end
+end
+
+local function attachHeroInfo(root)
+    local info = vgui.Create('DPanel', root)
+    info:SetPos(ScrW() * 0.3, ScrH() * 0.2)
+    info:SetSize(ScrW() * 0.5, ScrH() * 0.7)
+
+    function info:Paint(width, height) end
+
+    local heroNameLabel = vgui.Create('DLabel', info)
+    heroNameLabel:SetText('')
+    heroNameLabel:SetFont('OWA BigNoodleToo 64')
+    heroNameLabel:SetTextColor(Color(255, 255, 255, 255))
+    heroNameLabel:SetPos(0, 0)
+    heroNameLabel:SetSize(700, 500)
+    heroNameLabel:SetContentAlignment(7)
+    -- function heroNameLabel:Paint(width, height)
+    --     surface.SetTextColor(255, 255, 255, 255)
+    --     surface.SetTextPos(width * 0.0, height * 0.0)
+    --     surface.DrawText('Tracer')
+    -- end
+
+    local sketch = vgui.Create('DPanel', info)
+    sketch:SetPos(0, 75)
+    sketch:SetSize(200, 400)
+    function sketch:Paint(width, height)
+        if self.material == nil then return end
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(self.material)
+        surface.DrawTexturedRect(0, 0, width, height)
+    end
+
+    local description = vgui.Create('DLabel', info)
+    description:SetText('')
+    description:SetFont('OWA Futura 24')
+    description:SetPos(200, 75)
+    description:SetSize(800, 1500)
+    description:SetWrap(true)
+    description:SetContentAlignment(7)
+
+    function info:showHeroData(hero)
+        if hero == nil then return end
+        heroNameLabel:SetText(hero.name)
+        sketch.material = hero.materials.sketch
+
+        local descriptionText = hero.description..'\n\n\n'
+        for _, ability in pairs(hero.abilities) do
+            descriptionText = descriptionText..'Ability "'..ability.name..'"\n\n'..ability.description..'\n\n'
+        end
+        descriptionText = descriptionText
+                              ..'Ultimate Ability "'..hero.ultimate.name
+                              ..'"\n\n'..hero.ultimate.description
+        description:SetText(descriptionText)
+
+        self:SetVisible(true)
+    end
+
+    return info
 end
 
 local function createHeroSelectScreen()
     local root = createRoot()
 
     attachSelectHeroLabel(root)
-    attachHeroList(root)
+    local info = attachHeroInfo(root)
+    attachHeroList(root, info)
 
     return root
 end
