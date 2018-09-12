@@ -70,7 +70,7 @@ local function attachHeroList(root)
         attachItem(name, function()
             GetConVar('owa_hero'):SetString(name)
             root:Close()
-        end, hero.portrait or UNKNOWN_HERO_ICON, Color(255, 255, 255, 220))
+        end, hero.materials.portrait or UNKNOWN_HERO_ICON, Color(255, 255, 255, 220))
     end
 
     attachItem('None', function()
