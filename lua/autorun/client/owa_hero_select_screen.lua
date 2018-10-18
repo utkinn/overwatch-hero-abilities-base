@@ -49,7 +49,7 @@ local function attachHeroList(root, info)
         else
             text = hero.name or 'Unknown'
             clickHandler = function()
-                GetConVar('owa_hero'):SetString(name)
+                GetConVar('owa_hero'):SetString(text)
                 root:Close()
             end
             picture = hero.materials.portrait or UNKNOWN_HERO_ICON
@@ -140,6 +140,7 @@ local function attachHeroInfo(root)
 
     function info:showHeroData(hero)
         if hero == nil then return end
+
         heroNameLabel:SetText(hero.name)
         sketch.material = hero.materials.sketch
 

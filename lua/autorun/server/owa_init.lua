@@ -131,14 +131,14 @@ net.Receive('abilityCastRequest', function(_, ply)
     --For some reason 'normal' method was conflicting with TFA VOX.
     if ply:GetNWString('hero') == 'none' then return end
 
-    local ability = net.ReadUInt(3)
+    local ability = net.Read()
     local cooldownNWIntKey = 'cooldown '..ability
     local hero = OWA_HEROES[ply:GetNWString('hero')]
 
     if ply:GetNWInt(cooldownNWIntKey) <= 0 or DEBUG then
         hook.Run('AbilityCasted', ply, hero, ability)
     else
-        debugLog('Ability '..ability.name..' on cooldown('..ply:GetNWInt(cooldownNWIntKey)..'), denying.')
+        debugLog('Ability #'..ability..' on cooldown('..ply:GetNWInt(cooldownNWIntKey)..'), denying.')
     end
 end)
 
@@ -148,7 +148,7 @@ net.Receive('ultimateCastRequest', function(_, ply)
     local hero = OWA_HEROES[heroName]
 
     if ply:GetNWInt('ultimateCharge') >= hero.ultimate.pointsRequired then
-        local success = hero.ultimate:cast(ply)
+        local success = hero.ultimate.cast(ply)
 
         if success then
             ply:SetNWInt('ultimateCharge', 0)
