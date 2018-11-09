@@ -1,7 +1,6 @@
 -- TODO: Refactor this file
 include('owa_constants.lua')
-
-local showHeroSelectScreen = false
+include 'claf.lua'
 
 local function createOverwatchFont(size)
     surface.CreateFont('overwatch'..size, {
@@ -96,10 +95,6 @@ local function addOWAHeroSettingsPage(heroName)
     )
 end
 
-function OWA_toggleHeroSelectScreen()
-    showHeroSelectScreen = not showHeroSelectScreen
-end
-
 hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
     addOWASettingsPage('#owa.ui.settings.admin', 'Admin', function(form)
         form:Help('#owa.ui.settings.admin.heroPlayerProperties')
@@ -174,24 +169,13 @@ hook.Add('PopulateToolMenu', 'populateAbilityBaseMenu', function()
             function(num)
                 updateKeyBinding('showHeroSelectScreen', num)
             end,
-            OWA_controls.showHeroSelectScreen)
+            OWA_controls.showHeroSelectScreen
+        )
     end)
 
     for heroName, _ in pairs(OWA_HEROES) do
         addOWAHeroSettingsPage(heroName)
     end
-end)
-
-hook.Add('DrawOverlay', 'showHeroSelectScreen', function()
-    if not showHeroSelectScreen then return end
-
-    surface.SetDrawColor(0, 0, 0, 200)
-    surface.DrawRect(0, 0, ScrW(), ScrH())
-
-    surface.SetFont('overwatch60')
-    surface.SetTextColor(255, 255, 255, 255)
-    surface.SetTextPos(ScrW() * 0.05, ScrH() * 0.05)
-    surface.DrawText('#owa.ui.settings.controls.selectHero')
 end)
 
 net.Receive('allyChangedHero', function()

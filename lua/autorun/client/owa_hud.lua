@@ -1,6 +1,16 @@
-surface.CreateFont('OWA', {
+surface.CreateFont('OWA BigNoodleToo 64', {
     font = 'BigNoodleTooOblique',
     size = 64
+})
+
+surface.CreateFont('OWA BigNoodleToo 128', {
+    font = 'BigNoodleTooOblique',
+    size = 128
+})
+
+surface.CreateFont('OWA Futura 24', {
+    font = 'Futura No2 D Demi Bold',
+    size = 24
 })
 
 hook.Add('Think', 'updateHero', function()
@@ -30,7 +40,7 @@ end
 
 local function drawCooldownCountdown(id, x, y)
     local text = LocalPlayer():GetNWInt(getCooldownNWIntKey(id))
-    draw.DrawText(text, 'OWA', x, y)
+    draw.DrawText(text, 'OWA BigNoodleToo 64', x, y)
 end
 
 local function setDrawingColor(id)
@@ -74,7 +84,7 @@ hook.Add('HUDPaint', 'Draw OWA abilities HUD', function()
     if materials.ultimate and not isnumber(materials.ultimate) and hero.ultimate then
         surface.SetMaterial(materials.ultimate)
         surface.SetDrawColor(Color(255, 255, 255, TRANSPARENCY))
-        surface.DrawTexturedRect(ScrW() * 0.72, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
+        surface.DrawTexturedRect(ScrW() * 0.71, ScrH() * 0.92, ScrW() * 0.03,  ScrH() * 0.05)
     end
 end)
 

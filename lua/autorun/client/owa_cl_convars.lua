@@ -1,48 +1,26 @@
 include 'claf.lua'
 
--- Function forward declarations
-local setHeroCvarWithoutCallback, onSuccessfulHeroChange, revertHeroChange, addHeroChangeCallback
+local function validateHeroChange(oldHeroName, newHeroName)
+    local isHeroValid = Any(OWA_HEROES, function(hero) return hero.name == newHeroName end) or newHeroName == 'none'
 
--- Sets owa_hero cvar without triggering the change callback.
-setHeroCvarWithoutCallback = function(value)
-    cvars.RemoveChangeCallback('owa_hero', 'Validate hero change input')
-    GetConVar('owa_hero'):SetString(value)
-    addHeroChangeCallback()
-end
-
--- Called on successful hero change (hero is valid and not the same).
--- Prints respawn notification or kills the player according to his settings.
-onSuccessfulHeroChange = function()
-    if GetConVar('owa_suicide_on_hero_change'):GetBool() and LocalPlayer():Alive() then
-        Signal('OWA: Suicide')
-    else
-        chat.AddText('#owa.ui.chat.respawnRequired')
-    end
-end
-
--- Reverts cvar value change if the new hero is invalid.
-revertHeroChange = function(oldHeroName)
-    setHeroCvarWithoutCallback(oldHeroName)  -- Reverting the change
-    MsgC(Color(255, 0, 0), language.GetPhrase('owa.consoleHelp.owa_ui_hero.invalid')..'\n')
-end
-
-addHeroChangeCallback = function()
-    cvars.AddChangeCallback('owa_hero', function(conVarName, oldHeroName, newHeroName)
-        local isHeroValid = Any(OWA_HEROES, function(hero) return hero.name == newHeroName end) or newHeroName == 'none'
-
-        if not isHeroValid then
-            revertHeroChange(oldHeroName)
-        elseif oldHeroName ~= newHeroName then  -- elseif hero was changed
-            onSuccessfulHeroChange()
+    if not isHeroValid then
+        GetConVar('owa_hero'):SetString(oldHeroName)  -- Reverting the change
+        MsgC(Color(255, 0, 0), language.GetPhrase('owa.consoleHelp.owa_ui_hero.invalid'))
+    elseif oldHeroName ~= newHeroName then  -- elseif hero was changed, suicide if enabled
+        if GetConVar('owa_suicide_on_hero_change'):GetBool() and LocalPlayer():Alive() then
+            Signal 'OWA: Suicide'
+        else
+            chat.AddText('#owa.ui.chat.respawnRequired')
         end
-    end, 'Validate hero change input')
+    end
 end
 
 local function validateLanguageChange(oldLanguage, newLanguage)
-    if OWA_supportedLanguages[newLanguage] == nil then
-        MsgC(Color(255, 0, 0), 'Invalid language.\n')
-        GetConVar('owa_ui_language'):SetString(oldLanguage)  -- Reverting convar value
-    end
+    -- Return if the new language is in "supported" list, keep going if not
+    if OWA_supportedLanguages[newLanguage] then return end
+
+    MsgC(Color(255, 0, 0), 'Invalid language.\n')
+    GetConVar('owa_ui_language'):SetString(oldLanguage)  -- Reverting convar value
 end
 
 CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_ally'))
@@ -50,7 +28,9 @@ CreateClientConVar('owa_hud_halos_ally', 1, true, false, language.GetPhrase('owa
 CreateClientConVar('owa_hud_halos_enemy', 1, true, false, language.GetPhrase('owa.consoleHelp.owa_hud_halos_enemy'))
 
 CreateClientConVar('owa_hero', 'none', true, true, language.GetPhrase('owa.consoleHelp.owa_hero'))
-addHeroChangeCallback()
+cvars.AddChangeCallback('owa_hero', function(conVarName, oldHeroName, newHeroName)
+    validateHeroChange(oldHeroName, newHeroName)
+end, 'Validate hero change input')
 
 CreateClientConVar('owa_suicide_on_hero_change', 0, true, true,
                    language.GetPhrase('owa.consoleHelp.owa_suicide_on_hero_change'))

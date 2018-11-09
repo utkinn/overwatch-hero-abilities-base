@@ -19,6 +19,7 @@ AddCSLuaFile('owa_constants.lua')
 -- }
 
 local function notifyTeammatesAboutHeroChange(ply, hero)
+    --Notifying teammates about hero change
     local plyTeammates = team.GetPlayers(ply:Team())
 
     for _, broadcastTarget in pairs(plyTeammates) do
@@ -29,11 +30,9 @@ local function notifyTeammatesAboutHeroChange(ply, hero)
     end
 end
 
--- (Re)sets ply hero parameters.
+--(Re)sets ply hero parameters.
 local function setPlayerHero(ply, hero)
     ply:SetNWString('hero', hero.name)
-
-    -- Hero parameters application ahead; quit here if her is "none"
     if hero.name == 'none' then return end
 
     if GetConVar('owa_hero_customization_affects_health'):GetBool() then
@@ -95,8 +94,6 @@ local function hurtShield(victim, damageData)
     runShieldRestore(victim)
 end
 
--- Triggers the ability cooldown.
--- This function should be called in hero modules after execution of ability code.
 function abilitySucceeded(ply, id)
     local hero = OWA_HEROES[ply:GetNWString('hero')]
     local cooldownNWIntKey = 'cooldown '..id
@@ -107,16 +104,16 @@ function abilitySucceeded(ply, id)
 
     if DEBUG then PrintTable(hero) end
 
-    timer.Create(cooldownTimerKey, 1, cooldown - 1, function()  -- Creating a cooldown countdown timer
+    timer.Create(cooldownTimerKey, 1, cooldown - 1, function()    --Creating a cooldown countdown timer
         ply:SetNWInt(cooldownNWIntKey, ply:GetNWInt(cooldownNWIntKey) - 1)
     end)
 
-    timer.Simple(cooldown, function()  -- Removing cooldown flag
+    timer.Simple(cooldown, function()    --Removing cooldown flag
         ply:SetNWInt(cooldownNWIntKey, 0)
     end)
 end
 
-hook.Add('PlayerLoadout', 'setHero', function(ply)
+hook.Add('PlayerSpawn', 'setHero', function(ply)
     local heroToSet = OWA_HEROES[ply:GetInfo('owa_hero')]
     if heroToSet ~= nil then
         setPlayerHero(ply, heroToSet)
@@ -130,6 +127,8 @@ hook.Add('EntityTakeDamage', 'decreaseShield', function(target, damageData)
 end)
 
 net.Receive('abilityCastRequest', function(_, ply)
+    --Anti-conflict workaround:
+    --For some reason 'normal' method was conflicting with TFA VOX.
     if ply:GetNWString('hero') == 'none' then return end
 
     local ability = net.Read()
@@ -139,7 +138,7 @@ net.Receive('abilityCastRequest', function(_, ply)
     if ply:GetNWInt(cooldownNWIntKey) <= 0 or DEBUG then
         hook.Run('AbilityCasted', ply, hero, ability)
     else
-        debugLog('Ability '..ability.name..' on cooldown('..ply:GetNWInt(cooldownNWIntKey)..'), denying.')
+        debugLog('Ability #'..ability..' on cooldown('..ply:GetNWInt(cooldownNWIntKey)..'), denying.')
     end
 end)
 
@@ -149,7 +148,7 @@ net.Receive('ultimateCastRequest', function(_, ply)
     local hero = OWA_HEROES[heroName]
 
     if ply:GetNWInt('ultimateCharge') >= hero.ultimate.pointsRequired then
-        local success = hero.ultimate:castFunction(ply)
+        local success = hero.ultimate.cast(ply)
 
         if success then
             ply:SetNWInt('ultimateCharge', 0)
